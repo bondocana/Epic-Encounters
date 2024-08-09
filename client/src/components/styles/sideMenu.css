@@ -1,0 +1,59 @@
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  width: 7vw;
+  position: fixed;
+  background-color: #2b2a2a;
+  font-family: "Rubik", sans-serif;
+  font-size: 12px;
+  z-index: 999;
+}
+
+.profile-picture {
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-img:hover {
+  cursor: pointer;
+}
+
+.profile-img {
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast; /* Ensure the best possible rendering */
+}
+
+.tab {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tab:hover {
+  cursor: pointer;
+  background-color: #1c1c1c;
+}
+
+.tabs-container {
+  height: 75vh;
+}
+
+.logout {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout:hover {
+  cursor: pointer;
+  background-color: #1c1c1c;
+}

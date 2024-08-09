@@ -1,0 +1,55 @@
+:root {
+  --pink-color: #ffbdc7;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
+.postPageContainer {
+  display: flex;
+  flex-direction: column;
+  width: 93vw;
+  position: fixed;
+  font-family: "Rubik", sans-serif;
+  font-size: 12px;
+  margin-left: 7vw;
+  height: 100vh;
+}
+
+.imageTop {
+  width: 93vw;
+  height: 35vh;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast; /* Ensure the best possible rendering */
+  box-shadow: 0 7px 20px #5c5c5c;
+}
+
+.bottom {
+  padding: 3vh 2vw 2vh 2vw;
+  width: 89vw;
+  height: 60vh;
+}
+
+.postTitle {
+  color: var(--pink-color);
+  font-size: 34px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editDelete {
+  display: flex;
+  gap: 1vw;
+}
+
+.timelineMap {
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+}
