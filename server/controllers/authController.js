@@ -9,6 +9,7 @@ export const register = async (req, res) => {
       firstName,
       lastName,
       email,
+      phone,
       password,
       picturePath,
       county,
@@ -31,6 +32,7 @@ export const register = async (req, res) => {
       firstName,
       lastName,
       email,
+      phone,
       password: passwordHash,
       picturePath:
         picturePath === "undefined" ? "defaultProfilePicture.png" : picturePath,
@@ -44,10 +46,14 @@ export const register = async (req, res) => {
   } catch (err) {
     if (err.errors) {
       if (err.errors.firstName) {
-        return res.status(500).json({ error: "First Name must not exceed 50 characters." });
+        return res
+          .status(500)
+          .json({ error: "First Name must not exceed 50 characters." });
       }
       if (err.errors.lastName) {
-        return res.status(500).json({ error: "Last Name must not exceed 50 characters." });
+        return res
+          .status(500)
+          .json({ error: "Last Name must not exceed 50 characters." });
       }
     } else {
       if (err.errorResponse) {

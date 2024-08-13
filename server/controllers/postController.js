@@ -1,5 +1,8 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import Category from "../models/Category.js";
+import County from "../models/County.js";
+import Locality from "../models/Locality.js";
 
 // CREATE
 export const createPost = async (req, res) => {
@@ -18,6 +21,8 @@ export const createPost = async (req, res) => {
       location,
     } = req.body;
 
+    const category = await Category.findOne({ name: categoryId });
+
     const newPost = new Post({
       userId,
       title,
@@ -25,7 +30,7 @@ export const createPost = async (req, res) => {
       picturePath:
         picturePath === "undefined" ? "defaultPostPicture.png" : picturePath,
       isAproved,
-      categoryId,
+      categoryId: category._id,
       date,
       time,
       county,
@@ -33,7 +38,7 @@ export const createPost = async (req, res) => {
       location,
       likes: [],
       comments: [],
-      attending: [],
+      attending: [userId],
     });
 
     const savedPost = await newPost.save();
@@ -64,8 +69,77 @@ export const deletePost = async (req, res) => {
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Găsește postarea după ID
     const post = await Post.findById(id);
-    res.status(200).json(post);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Găsește județul după atributul idCounty din postare
+    const county = await County.findOne({ idCounty: post.county });
+
+    // Găsește localitatea după atributul idLocality din postare
+    const locality = await Locality.findOne({ idLocality: post.locality });
+
+    const category = await Category.findOne({ _id: post.categoryId });
+
+    // Creează un obiect cu datele postării, incluzând numele județului și localității
+    const postResponse = {
+      ...post._doc,
+      county: county ? county.name : null, // returnează numele sau null dacă nu este găsit
+      locality: locality ? locality.name : null, // returnează numele sau null dacă nu este găsit
+      categoryId: category ? category.name : null,
+    };
+
+    // Trimite răspunsul
+    res.status(200).json(postResponse);
+  } catch (err) {
+    res.status(409).json({ message: err.message });
+  }
+};
+
+// GET USERS POST
+export const getUsersPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Găsește utilizatorul după ID
+    const currentUser = await User.findById(userId);
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Găsește toate postările utilizatorului
+    const usersPosts = await Post.find({ userId: userId });
+
+    // Funcție pentru a parsa stringul de dată din formatul "DD/MM/YYYY" într-un obiect Date
+    const parseDate = (dateStr) => {
+      const [day, month, year] = dateStr.split("/");
+      return new Date(`${year}-${month}-${day}`);
+    };
+
+    // Filtrează și sortează postările
+    const sortedPosts = usersPosts
+      .filter((post) => parseDate(post.date) > new Date()) // Afișează doar postările cu data mai mare decât cea curentă
+      .sort((a, b) => parseDate(a.date) - parseDate(b.date)); // Sortează în ordine descrescătoare după dată
+
+    // Pentru fiecare postare, înlocuiește ID-urile cu numele corespunzătoare
+    const postsWithLocationNames = await Promise.all(
+      sortedPosts.map(async (post) => {
+        const county = await County.findOne({ idCounty: post.county });
+        const locality = await Locality.findOne({ idLocality: post.locality });
+
+        return {
+          ...post._doc,
+          county: county ? county.name : null, // Înlocuiește ID-ul județului cu numele
+          locality: locality ? locality.name : null, // Înlocuiește ID-ul localității cu numele
+        };
+      })
+    );
+
+    res.status(200).json(postsWithLocationNames);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
@@ -82,21 +156,31 @@ export const getUserCountyPosts = async (req, res) => {
 
     const allPosts = await Post.find({ county: currentUser.county });
 
-    // // Function to parse the date string
-    // const parseDate = (dateStr) => {
-    //   const [day, month, yearTime] = dateStr.split(".");
-    //   const [year, time] = yearTime.split(" ");
-    //   return new Date(`${year}-${month}-${day}T${time}:00`);
-    // };
+    // Funcție pentru a parsa stringul de dată din formatul "DD/MM/YYYY" într-un obiect Date
+    const parseDate = (dateStr) => {
+      const [day, month, year] = dateStr.split("/");
+      return new Date(`${year}-${month}-${day}`);
+    };
 
-    // // Sort the posts by date in descending order
-    // const sortedPosts = allPosts.sort((a, b) => {
-    //   const dateA = parseDate(a.date);
-    //   const dateB = parseDate(b.date);
-    //   return -(dateB - dateA);
-    // });
+    // Filtrează și sortează postările
+    const sortedPosts = allPosts
+      .filter((post) => parseDate(post.date) > new Date()) // Afișează doar postările cu data mai mare decât cea curentă
+      .sort((a, b) => parseDate(a.date) - parseDate(b.date)); // Sortează în ordine descrescătoare după dată
 
-    res.status(200).json(allPosts);
+    const postsWithLocationNames = await Promise.all(
+      sortedPosts.map(async (post) => {
+        const county = await County.findOne({ idCounty: post.county });
+        const locality = await Locality.findOne({ idLocality: post.locality });
+
+        return {
+          ...post._doc,
+          county: county ? county.name : null, // Înlocuiește ID-ul județului cu numele
+          locality: locality ? locality.name : null, // Înlocuiește ID-ul localității cu numele
+        };
+      })
+    );
+
+    res.status(200).json(postsWithLocationNames);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
@@ -107,21 +191,31 @@ export const getPostsByDate = async (req, res) => {
   try {
     const allPosts = await Post.find();
 
-    // // Function to parse the date string
-    // const parseDate = (dateStr) => {
-    //   const [day, month, yearTime] = dateStr.split(".");
-    //   const [year, time] = yearTime.split(" ");
-    //   return new Date(`${year}-${month}-${day}T${time}:00`);
-    // };
+    // Funcție pentru a parsa stringul de dată din formatul "DD/MM/YYYY" într-un obiect Date
+    const parseDate = (dateStr) => {
+      const [day, month, year] = dateStr.split("/");
+      return new Date(`${year}-${month}-${day}`);
+    };
 
-    // // Sort the posts by date in descending order
-    // const sortedPosts = allPosts.sort((a, b) => {
-    //   const dateA = parseDate(a.date);
-    //   const dateB = parseDate(b.date);
-    //   return -(dateB - dateA);
-    // });
+    // Filtrează și sortează postările
+    const sortedPosts = allPosts
+      .filter((post) => parseDate(post.date) > new Date()) // Afișează doar postările cu data mai mare decât cea curentă
+      .sort((a, b) => parseDate(a.date) - parseDate(b.date)); // Sortează în ordine descrescătoare după dată
 
-    res.status(200).json(allPosts);
+    const postsWithLocationNames = await Promise.all(
+      sortedPosts.map(async (post) => {
+        const county = await County.findOne({ idCounty: post.county });
+        const locality = await Locality.findOne({ idLocality: post.locality });
+
+        return {
+          ...post._doc,
+          county: county ? county.name : null, // Înlocuiește ID-ul județului cu numele
+          locality: locality ? locality.name : null, // Înlocuiește ID-ul localității cu numele
+        };
+      })
+    );
+
+    res.status(200).json(postsWithLocationNames);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -135,21 +229,31 @@ export const getPostsByCategoryAndDate = async (req, res) => {
     // Find posts where the categoryid matches and sort them in descending order by date
     const categoryPosts = await Post.find({ categoryId: categoryid });
 
-    // Function to parse the date string
+    // Funcție pentru a parsa stringul de dată din formatul "DD/MM/YYYY" într-un obiect Date
     const parseDate = (dateStr) => {
-      const [day, month, yearTime] = dateStr.split(".");
-      const [year, time] = yearTime.split(" ");
-      return new Date(`${year}-${month}-${day}T${time}:00`);
+      const [day, month, year] = dateStr.split("/");
+      return new Date(`${year}-${month}-${day}`);
     };
 
-    // Sort the posts by date in descending order
-    const sortedPosts = categoryPosts.sort((a, b) => {
-      const dateA = parseDate(a.date);
-      const dateB = parseDate(b.date);
-      return -(dateB - dateA);
-    });
+    // Filtrează și sortează postările
+    const sortedPosts = categoryPosts
+      .filter((post) => parseDate(post.date) > new Date()) // Afișează doar postările cu data mai mare decât cea curentă
+      .sort((a, b) => parseDate(a.date) - parseDate(b.date)); // Sortează în ordine descrescătoare după dată
 
-    res.status(200).json(sortedPosts);
+    const postsWithLocationNames = await Promise.all(
+      sortedPosts.map(async (post) => {
+        const county = await County.findOne({ idCounty: post.county });
+        const locality = await Locality.findOne({ idLocality: post.locality });
+
+        return {
+          ...post._doc,
+          county: county ? county.name : null, // Înlocuiește ID-ul județului cu numele
+          locality: locality ? locality.name : null, // Înlocuiește ID-ul localității cu numele
+        };
+      })
+    );
+
+    res.status(200).json(postsWithLocationNames);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -177,3 +281,23 @@ export const updatePost = async (req, res) => {
   }
 };
 
+// GET ALL USERS THAT ARE ATTENDING TO AN EVENT
+export const getAttendingUsers = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    // Find the post by postId
+    const post = await Post.findById(postId);
+
+    // If post not found, return a 404 error
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const attendingUsers = await User.find({ _id: { $in: post.attending } });
+
+    // Return the attending array
+    res.status(200).json(attendingUsers);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
