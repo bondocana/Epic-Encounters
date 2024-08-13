@@ -13,7 +13,7 @@ body {
   flex-direction: column;
   width: 89vw;
   position: fixed;
-  font-family: "Rubik", sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 12px;
   margin-left: 7vw;
   height: 96vh;
@@ -54,4 +54,3 @@ body {
     gap: 2vw;
   }
 }
-

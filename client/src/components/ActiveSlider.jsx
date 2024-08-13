@@ -18,6 +18,10 @@ const ActiveSlider = () => {
   const posts = useSelector((state) => state.posts);
   const navigate = useNavigate();
 
+  const truncatedString = (str) => {
+    return str.length > 40 ? `${str.substring(0, 40)}...` : str;
+  };
+
   const getUserCountyPosts = useCallback(async () => {
     const response = await fetch(
       `http://localhost:3001/posts/${userId}/county`,
@@ -62,8 +66,8 @@ const ActiveSlider = () => {
           modules={[FreeMode, Pagination, Autoplay]}
         >
           {posts.length > 0 &&
-            posts.map((item) => (
-              <SwiperSlide key={item.title}>
+            posts.map((item, index) => (
+              <SwiperSlide key={index}>
                 {/* <div className="flex flex-col gap-6 mb-20 group relative shadow-lg text-white rounded-xl px-6 py-8 h-[250px] w-[215px] lg:h-[400px] lg:w-[350px] overflow-hidden cursor-pointer">
                 <div
                   className="absolute inset-0 bg-cover bg-center"
@@ -79,6 +83,9 @@ const ActiveSlider = () => {
               </div> */}
                 <div
                   className="card"
+                  onClick={() => {
+                    navigate(`/post/${item._id}`);
+                  }}
                   style={{
                     backgroundImage: `url(http://localhost:3001/assets/${item.picturePath})`,
                   }}
@@ -86,16 +93,7 @@ const ActiveSlider = () => {
                   <div className="card-content">
                     {/* Placeholder for icon */}
                     <h2>{item.title}</h2>
-                    <p>{item.description}</p>
-                    <div className="card-arrow">
-                      <FaArrowRight
-                        className="arrow"
-                        onClick={() => {
-                          navigate(`/post/${item._id}`);
-                        }}
-                      />
-                    </div>{" "}
-                    {/* Placeholder for arrow */}
+                    <p>{truncatedString(item.description)}</p>
                   </div>
                 </div>
               </SwiperSlide>

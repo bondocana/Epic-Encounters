@@ -24,7 +24,17 @@ const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
+  phone: yup
+    .string()
+    .matches(/^07[0-9]{8}$/, "Invalid phone number.")
+    .required("required"),
+  password: yup
+    .string()
+    .matches(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+      "The password does not meet the required conditions."
+    )
+    .required("required"),
   county: yup.string().required("required"),
   locality: yup.string().required("required"),
   picture: yup.string(),
@@ -34,6 +44,7 @@ const initialValuesRegister = {
   firstName: "",
   lastName: "",
   email: "",
+  phone: "",
   password: "",
   county: "",
   locality: "",
@@ -53,15 +64,6 @@ const MenuProps = {
 const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state?.token ?? null); // Provide default value null
-  const userId = useSelector((state) => state?.user?._id ?? null); // Provide default value null
-
-  useEffect(() => {
-    if (token && userId) {
-      dispatch(setLogout());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
 
   // REGISTER
   const register = async (values, onSubmitProps) => {
@@ -101,7 +103,7 @@ const RegisterPage = () => {
       // aici la fel orice returneaza endpoint-ul aceasta variabila va avea ceva in ea
       const loggedIn = await loggedInResponse.json();
       onSubmitProps.resetForm();
-      if (savedUser && loggedIn) {
+      if (savedUser && loggedIn.user && loggedIn.token) {
         dispatch(
           setLogin({
             user: loggedIn.user,
@@ -185,7 +187,8 @@ const RegisterPage = () => {
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="title">
-                <span style={{ color: "lightgray" }}>Ǝ</span>E
+                <span style={{ color: "lightgray" }}>Ǝ</span>
+                <span style={{ fontFamily: "Rubik, sans-serif" }}>E</span>
               </div>
               <div
                 className="title"
@@ -209,6 +212,7 @@ const RegisterPage = () => {
                     width: "17vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
@@ -219,6 +223,7 @@ const RegisterPage = () => {
                       },
                     "& .MuiOutlinedInput-root": {
                       color: "white", // Text color
+                      "font-family": "Quicksand, sans-serif",
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
                       },
@@ -228,6 +233,7 @@ const RegisterPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -242,6 +248,7 @@ const RegisterPage = () => {
                     width: "17vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
@@ -252,6 +259,7 @@ const RegisterPage = () => {
                       },
                     "& .MuiOutlinedInput-root": {
                       color: "white", // Text color
+                      "font-family": "Quicksand, sans-serif",
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
                       },
@@ -261,6 +269,7 @@ const RegisterPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -296,6 +305,7 @@ const RegisterPage = () => {
                             ? "red"
                             : "var(--pink-color)",
                       },
+                      "font-family": "Quicksand, sans-serif",
                     }}
                   >
                     County
@@ -333,10 +343,15 @@ const RegisterPage = () => {
                         color:
                           touched.locality && errors.locality ? "red" : "white",
                       },
+                      "font-family": "Quicksand, sans-serif",
                     }}
                   >
                     {counties.map((county) => (
-                      <MenuItem key={county.idCounty} value={county.idCounty}>
+                      <MenuItem
+                        key={county.idCounty}
+                        value={county.idCounty}
+                        sx={{ "font-family": "Quicksand, sans-serif" }}
+                      >
                         {county.name}
                       </MenuItem>
                     ))}
@@ -353,6 +368,7 @@ const RegisterPage = () => {
                             ? "red"
                             : "var(--pink-color)",
                       },
+                      "font-family": "Quicksand, sans-serif",
                     }}
                   >
                     Locality
@@ -392,19 +408,14 @@ const RegisterPage = () => {
                         color:
                           touched.locality && errors.locality ? "red" : "white",
                       },
+                      "font-family": "Quicksand, sans-serif",
                     }}
                   >
                     {localities.map((locality) => (
                       <MenuItem
                         key={locality.idLocality}
                         value={locality.idLocality}
-                        // sx={{
-                        //   backgroundColor: "#222222",
-                        //   "&:hover": {
-                        //     backgroundColor: "#999999",
-                        //   },
-                        //   color: "white", // Optional: set text color for better contrast
-                        // }}
+                        sx={{ "font-family": "Quicksand, sans-serif" }}
                       >
                         {locality.name}
                       </MenuItem>
@@ -440,7 +451,14 @@ const RegisterPage = () => {
                     >
                       <input {...getInputProps()} />
                       {!values.picture ? (
-                        <div style={{ color: "white" }}>Add picture here</div>
+                        <div
+                          style={{
+                            color: "white",
+                            "font-family": "Quicksand, sans-serif",
+                          }}
+                        >
+                          Add picture here
+                        </div>
                       ) : (
                         <div
                           style={{
@@ -450,7 +468,11 @@ const RegisterPage = () => {
                             color: "var(--pink-color)",
                           }}
                         >
-                          <Typography>{values.picture.name}</Typography>
+                          <Typography
+                            sx={{ "font-family": "Quicksand, sans-serif" }}
+                          >
+                            {values.picture.name}
+                          </Typography>
                           <EditOutlinedIcon />
                         </div>
                       )}
@@ -458,20 +480,24 @@ const RegisterPage = () => {
                   )}
                 </Dropzone>
               </Box>
-
+                  
               {/** email and password */}
-              <div className="label-container">
+              <div className="label-container2">
+                {/* phone */}
                 <TextField
-                  label="Email"
+                  label="Phone"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.email}
-                  name="email"
-                  error={Boolean(touched.email) && Boolean(errors.email)}
+                  value={values.phone}
+                  name="phone"
+                  error={
+                    Boolean(touched.phone) && Boolean(errors.phone)
+                  }
                   sx={{
-                    width: "17vw",
+                    width: "11.5vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
@@ -482,6 +508,7 @@ const RegisterPage = () => {
                       },
                     "& .MuiOutlinedInput-root": {
                       color: "white", // Text color
+                      "font-family": "Quicksand, sans-serif",
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
                       },
@@ -491,6 +518,44 @@ const RegisterPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
+                    },
+                  }}
+                />
+                <TextField
+                  label="Email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                  error={Boolean(touched.email) && Boolean(errors.email)}
+                  sx={{
+                    width: "11.5vw",
+                    "& .MuiFormLabel-root": {
+                      color: "white",
+                      "font-family": "Quicksand, sans-serif",
+                    },
+                    "& .MuiFormLabel-root.Mui-focused": {
+                      color: "var(--pink-color)", // Label color when focused
+                      "font-family": "Quicksand, sans-serif",
+                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "var(--pink-color)", // Outline color when focused
+                      },
+                    "& .MuiOutlinedInput-root": {
+                      color: "white", // Text color
+                      "font-family": "Quicksand, sans-serif",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white", // Base outline color
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white", // Outline color on hover
+                      },
+                    },
+                    "& .MuiInputBase-input": {
+                      color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -503,12 +568,14 @@ const RegisterPage = () => {
                   name="password"
                   error={Boolean(touched.password) && Boolean(errors.password)}
                   sx={{
-                    width: "17vw",
+                    width: "11.5vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                       {
@@ -516,6 +583,7 @@ const RegisterPage = () => {
                       },
                     "& .MuiOutlinedInput-root": {
                       color: "white", // Text color
+                      "font-family": "Quicksand, sans-serif",
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
                       },
@@ -525,6 +593,7 @@ const RegisterPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -543,6 +612,7 @@ const RegisterPage = () => {
                   "&:active": {
                     backgroundColor: "#b2b2b2",
                   },
+                  "font-family": "Quicksand, sans-serif",
                 }}
               >
                 REGISTER
@@ -553,7 +623,12 @@ const RegisterPage = () => {
                   alignItems: "center",
                 }}
               >
-                <span style={{ color: "#808080" }}>
+                <span
+                  style={{
+                    color: "#808080",
+                    "font-family": "Quicksand, sans-serif",
+                  }}
+                >
                   Already have an account?
                 </span>
                 &nbsp;
@@ -568,6 +643,7 @@ const RegisterPage = () => {
                     },
                     color: "var(--pink-color)",
                     fontWeight: "600",
+                    "font-family": "Quicksand, sans-serif",
                   }}
                 >
                   Login here

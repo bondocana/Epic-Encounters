@@ -7,24 +7,40 @@ import ProfilePage from "components/ProfilePage";
 import PostPage from "components/PostPage";
 import NewPost from "components/NewPostPage";
 import DefaultLayout from "components/DefaultLayout";
+import GuestLayout from "components/GuestLayout";
 import { useSelector } from "react-redux";
 
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route element={<DefaultLayout />}>
-          <Route path="/home" element={isAuth ? <HomePage /> : <Navigate to="/" />} />
-          <Route path="/profile/:userId" element={isAuth ? <ProfilePage /> : <Navigate to="/" />} />
-          <Route path="/newPost" element={isAuth ? <NewPost /> : <Navigate to="/" />} />
-          <Route path="/post/:postId" element={isAuth ? <PostPage /> : <Navigate to="/" />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <style>
+        @import
+        url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
+      </style>
+
+      <BrowserRouter>
+        <Routes>
+          <Route
+            element={isAuth ? <Navigate to="/home" /> : <GuestLayout />}
+            path="/"
+          >
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+          <Route
+            element={isAuth ? <DefaultLayout /> : <Navigate to="/" />}
+            path="/"
+          >
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/profile/:userId" element={<ProfilePage />} />
+            <Route path="/newPost" element={<NewPost />} />
+            <Route path="/post/:postId" element={<PostPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

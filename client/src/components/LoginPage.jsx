@@ -22,16 +22,6 @@ const initialValuesLogin = {
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state?.token ?? null); // Provide default value null
-  const userId = useSelector((state) => state?.user?._id ?? null); // Provide default value null
-
-  useEffect(() => {
-    if (token && userId) {
-      dispatch(setLogout());
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
@@ -43,7 +33,7 @@ const LoginPage = () => {
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
 
-    if (loggedIn) {
+    if (loggedIn.user && loggedIn.token) {
       dispatch(
         setLogin({
           user: loggedIn.user,
@@ -82,7 +72,8 @@ const LoginPage = () => {
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="title">
-                <span style={{ color: "lightgray" }}>Ǝ</span>E
+                <span style={{ color: "lightgray" }}>Ǝ</span>
+                <span style={{ fontFamily: "Rubik, sans-serif" }}>E</span>
               </div>
               <div
                 className="title"
@@ -105,9 +96,11 @@ const LoginPage = () => {
                     width: "24vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                       {
@@ -117,6 +110,7 @@ const LoginPage = () => {
                       color: "white", // Text color
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
+                        "font-family": "Quicksand, sans-serif",
                       },
                       "&:hover .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Outline color on hover
@@ -124,6 +118,7 @@ const LoginPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -139,9 +134,11 @@ const LoginPage = () => {
                     width: "24vw",
                     "& .MuiFormLabel-root": {
                       color: "white",
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiFormLabel-root.Mui-focused": {
                       color: "var(--pink-color)", // Label color when focused
+                      "font-family": "Quicksand, sans-serif",
                     },
                     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                       {
@@ -151,6 +148,7 @@ const LoginPage = () => {
                       color: "white", // Text color
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Base outline color
+                        "font-family": "Quicksand, sans-serif",
                       },
                       "&:hover .MuiOutlinedInput-notchedOutline": {
                         borderColor: "white", // Outline color on hover
@@ -158,6 +156,7 @@ const LoginPage = () => {
                     },
                     "& .MuiInputBase-input": {
                       color: "var(--pink-color)", // Text color for input
+                      "font-family": "Quicksand, sans-serif",
                     },
                   }}
                 />
@@ -177,6 +176,7 @@ const LoginPage = () => {
                   "&:active": {
                     backgroundColor: "#b2b2b2",
                   },
+                  "font-family": "Quicksand, sans-serif",
                 }}
               >
                 LOGIN
@@ -187,7 +187,14 @@ const LoginPage = () => {
                   alignItems: "center",
                 }}
               >
-                <span style={{ color: "#808080" }}>Don't have an account?</span>
+                <span
+                  style={{
+                    color: "#808080",
+                    "font-family": "Quicksand, sans-serif",
+                  }}
+                >
+                  Don't have an account?
+                </span>
                 &nbsp;
                 <Typography
                   onClick={() => {
@@ -200,6 +207,7 @@ const LoginPage = () => {
                     },
                     color: "var(--pink-color)",
                     fontWeight: "600",
+                    "font-family": "Quicksand, sans-serif",
                   }}
                 >
                   Register here

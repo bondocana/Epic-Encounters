@@ -5,8 +5,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect, useCallback, useState } from "react";
 import { setPosts2 } from "../state/authSlice.js";
+import locationIcon from "./styles/icons/location-icon.png";
 // import Avatar from "@mui/material/Avatar";
 // import AvatarGroup from "@mui/material/AvatarGroup";
+import { useNavigate } from "react-router-dom";
 
 const FeedPosts = () => {
   const token = useSelector((state) => state.token);
@@ -15,6 +17,11 @@ const FeedPosts = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // Noua stare pentru textul de căutare
+  const navigate = useNavigate();
+
+  const truncatedString = (str) => {
+    return str.length > 230 ? `${str.substring(0, 230)}...` : str;
+  };
 
   // Funcție pentru a prelua toate categoriile
   const fetchCategories = useCallback(async () => {
@@ -91,7 +98,9 @@ const FeedPosts = () => {
     ? posts2.filter(
         (post) =>
           post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          post.description.toLowerCase().includes(searchQuery.toLowerCase())
+          post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.county.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.locality.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : posts2;
 
@@ -123,19 +132,64 @@ const FeedPosts = () => {
 
       <div className="feed-posts">
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((item) => (
-            <div className="post" key={item.id}>
+          filteredPosts.map((item, index) => (
+            <div
+              className="post"
+              key={index}
+              onClick={() => {
+                navigate(`/post/${item._id}`);
+              }}
+            >
               <div
                 className="picture"
                 style={{
-
                   backgroundImage: `url(http://localhost:3001/assets/${item.picturePath})`,
                 }}
               ></div>
               <div className="info">
-                {item.title} {item.date} {item.description}
+                <span
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "1000",
+                    marginBottom: "15px",
+                  }}
+                >
+                  {item.title}
+                  <span
+                    style={{
+                      color: "#dedede",
+                      fontSize: "13px",
+                      fontWeight: "100",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    <img
+                      src={locationIcon}
+                      alt=""
+                      style={{ height: "12px", width: "12px" }}
+                    ></img>
+                    {" " + item.locality + ", " + item.county}
+                  </span>
+                </span>
+                <span style={{ color: "white" }}>
+                  {truncatedString(item.description)}
+                </span>
               </div>
-
+              <div className="date">
+                <div>
+                  {new Date(item.date.split("/").reverse().join("-")).getDate()}
+                </div>
+                <div>
+                  {new Date(item.date.split("/").reverse().join("-"))
+                    .toLocaleString("default", { month: "short" })
+                    .toUpperCase()}
+                </div>
+                <div>
+                  {new Date(
+                    item.date.split("/").reverse().join("-")
+                  ).getFullYear()}
+                </div>
+              </div>
               {/* <AvatarGroup
               renderSurplus={(surplus) => (
                 <span>+{Math.floor(surplus / 1000)}k</span>
@@ -154,7 +208,7 @@ const FeedPosts = () => {
           ))
         ) : (
           <div className="message">
-            Nu s-au găsit postări care să corespundă criteriilor de căutare.
+            No posts were found that match the search criteria.
           </div>
         )}
       </div>

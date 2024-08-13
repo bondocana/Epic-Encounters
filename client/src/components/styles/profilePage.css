@@ -1,91 +1,127 @@
-.filter-menu {
+:root {
+  --pink-color: #ffbdc7;
+}
+
+.profile-container {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 17vw;
-  height: 70vh;
+  width: 87vw;
   position: fixed;
-  background-color: #2b2a2a;
-  bottom: 0; /* Position it at the bottom */
-  right: 0; /* Position it at the right */
-  z-index: -1;
+  margin-left: 7vw;
+  height: 90vh;
+  gap: 3vw;
+  padding: 5vh 3vw;
+  font-family: "Quicksand", sans-serif;
 }
 
-.filter-menu .search-input {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
-}
-
-.filter-menu .search-input input {
-  flex-grow: 1;
-  padding: 8px;
-  margin-right: 10px;
-}
-
-.filter-menu button {
-  margin: 5px 0;
-  padding: 10px 20px;
-  background-color: #555;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.filter-menu button:hover {
-  background-color: #777;
-}
-
-.filter-menu .category-buttons {
+.left-container {
+  width: 65vw;
   display: flex;
   flex-direction: column;
-  width: 13vw;
 }
 
-.feed-posts {
+.right-container {
+  width: 19vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-pic-container {
+  width: 250px;
+  height: 250px;
+  overflow: hidden; /* Ascunde părțile imaginii care ies în afara containerului */
+  border-radius: 10px; /* Opțional, pentru a face imaginea circulară */
+  position: relative; /* Asigură că imaginea se poziționează corect în container */
+  margin-left: 1.5vw;
+  margin-bottom: 4vh;
+}
+
+.profile-pic {
+  width: 130%; /* Dimensiune mai mare decât containerul pentru a asigura crop */
+  position: absolute; /* Poziționează imaginea relativ la container */
+  top: 50%; /* Centrare verticală */
+  left: 50%; /* Centrare orizontală */
+  transform: translate(-50%, -50%); /* Ajustează pentru centrare perfectă */
+}
+
+.hr2 {
+  width: 100%; /* Setează lățimea la 80% din container */
+  height: 0.5px; /* Grosimea liniei */
+  background-color: var(--pink-color); /* Culoarea liniei */
+  border: none; /* Elimină eventualele borduri */
+  margin-bottom: 5vh;
+}
+
+.name-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2vh;
+  padding: 0 1vw 0 1vw;
+}
+.name {
+  color: var(--pink-color);
+  font-size: 27px;
+  font-weight: 400;
+  margin-top: 1vh;
+}
+
+.sub-title {
+  margin-bottom: -8px;
+  color: var(--pink-color);
+  font-size: 15px;
+}
+
+.sub-sub-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 550;
+  margin-bottom: 1vh;
+}
+
+.profile-info {
+  color: #dedede;
+  margin-bottom: 5vh;
+  margin-left: 35px;
+}
+
+.feed-posts2 {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center horizontally */
-  width: 74vw;
-  height: 67.5vh;
+  width: 65vw;
+  height: 78vh;
   position: fixed;
   bottom: 0; /* Position it at the bottom */
   left: 50%; /* Shift it to the center horizontally */
-  transform: translateX(-56%); /* Adjust for half of its own width */
+  transform: translateX(-63%); /* Adjust for half of its own width */
   overflow-y: auto;
   padding: 10px;
 }
 
 /* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
-.feed-posts::-webkit-scrollbar {
+.feed-posts2::-webkit-scrollbar {
   width: 14px; /* Width of the scrollbar */
 }
 
-.feed-posts::-webkit-scrollbar-track {
+.feed-posts2::-webkit-scrollbar-track {
   background: #141414; /* Background of the track */
 }
 
-.feed-posts::-webkit-scrollbar-thumb {
+.feed-posts2::-webkit-scrollbar-thumb {
   background-color: #555; /* maybe roz? ffbdc7*/
   border-radius: 8px; /* Optional: rounded corners */
   border: 3px solid #141414; /* Optional: border around the thumb */
 }
 
-.feed-posts::-webkit-scrollbar-thumb:hover {
+.feed-posts2::-webkit-scrollbar-thumb:hover {
   background: #888; /* Color of the scrollbar thumb when hovered */
 }
-.post {
+.post2 {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 
   width: 60vw; /* Make posts take full width of the feed */
-  height: auto; /* Adjust height as needed */
-  min-height: 120px;
+  max-height: 120px;
   margin-bottom: 10px; /* Space between posts */
   margin-top: 10px;
   padding: 0; /* Optional: padding inside the post */
@@ -96,13 +132,13 @@
   overflow: hidden;
 }
 
-.post:hover {
+.post2:hover {
   cursor: pointer;
   transform: scale(1.02);
   transition: transform 0.5s ease;
 }
 
-.info {
+.info2 {
   flex-grow: 1; /* Make the info section take the remaining space */
   display: flex;
   flex-direction: column;
@@ -111,7 +147,7 @@
   max-width: calc(60vw - 220px);
 }
 
-.picture {
+.picture2 {
   min-width: 120px;
   height: 120px;
   background-size: cover;
@@ -120,7 +156,7 @@
   margin-right: 10px; /* Space between picture and info */
 }
 
-.message {
+.message2 {
   display: flex;
   color: #ffbdc7;
   font-family: "Quicksand", sans-serif;
@@ -131,7 +167,7 @@
   justify-content: center;
 }
 
-.date {
+.date2 {
   height: 120px;
   min-width: 100px;
   background-color: #ffbdc7;

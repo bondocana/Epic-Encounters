@@ -34,6 +34,20 @@ const SideMenu = () => {
 
   return (
     <div className="side-menu">
+      <div className="logo">
+        <span
+          style={{
+            color: "lightgray",
+            fontFamily: "Rubik, sans-serif",
+            fontSize: "28px",
+          }}
+        >
+          Ǝ
+        </span>
+        <span style={{ fontFamily: "Rubik, sans-serif", fontSize: "28px" }}>
+          E
+        </span>
+      </div>
       <div className="profile-picture">
         <img
           src={`http://localhost:3001/assets/${user.picturePath}`}
@@ -44,12 +58,8 @@ const SideMenu = () => {
       </div>
       <div className="tabs-container">
         <div className="tab" onClick={() => navigate("/home")}>
-          <img
-            src={home}
-            alt=""
-            style={{ height: "30px", width: "30px" }}
-          />
-          <span style={{ color: "var(--pink-color)" }}> Home </span>
+          <img src={home} alt="" style={{ height: "30px", width: "30px" }} />
+          <span> Home </span>
         </div>
         <div className="tab" onClick={() => navigate("/newPost")}>
           <img
@@ -57,25 +67,17 @@ const SideMenu = () => {
             alt=""
             style={{ height: "30px", width: "30px" }}
           />
-          <span style={{ color: "var(--pink-color)" }}> Add Event</span>
+          <span> Add Event</span>
         </div>
 
         <div className="tab">
-          <img
-            src={friends}
-            alt=""
-            style={{ height: "30px", width: "30px" }}
-          />
-          <span style={{ color: "var(--pink-color)" }}> Friends</span>
+          <img src={friends} alt="" style={{ height: "30px", width: "30px" }} />
+          <span> Friends</span>
         </div>
 
         <div className="tab">
-          <img
-            src={admin}
-            alt=""
-            style={{ height: "30px", width: "30px" }}
-          />
-          <span style={{ color: "var(--pink-color)" }}> Admin</span>
+          <img src={admin} alt="" style={{ height: "30px", width: "30px" }} />
+          <span> Admin</span>
         </div>
       </div>
       <div className="logout" onClick={() => dispatch(setLogout())}>

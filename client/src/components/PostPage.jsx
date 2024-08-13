@@ -10,16 +10,18 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
-import LaptopMacIcon from "@mui/icons-material/LaptopMac";
-import HotelIcon from "@mui/icons-material/Hotel";
-import RepeatIcon from "@mui/icons-material/Repeat";
 import Typography from "@mui/material/Typography";
 import editIcon from "./styles/icons/edit-icon.png";
 import deleteIcon from "./styles/icons/delete-icon.png";
 import CustomModal from "./CustomModal";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import DescriptionIcon from "@mui/icons-material/Description";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import CategoryIcon from "@mui/icons-material/Category";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
 
 const Post = () => {
   const { postId } = useParams();
@@ -29,6 +31,10 @@ const Post = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [isOwner, setIsOwner] = useState();
+
+  const truncatedString = (str) => {
+    return str.length > 45 ? `${str.substring(0, 45)}...` : str;
+  };
 
   // GET POST
   const getPost = useCallback(async () => {
@@ -107,10 +113,36 @@ const Post = () => {
   const [showModal, setShowModal] = useState(false);
   const handleDelete = () => {
     deletePost();
-    console.log("Item deleted");
     setShowModal(false);
     navigate("/home");
   };
+
+  const [attendingUsers, setAttendingUsers] = useState([]);
+  // GET ATTENDING USERS
+  const getAttendingUsers = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/posts/attending/${postId}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      setAttendingUsers(data);
+    } catch (error) {
+      console.error("Error delting post:", error);
+    }
+  }, [postId, token]);
+
+  useEffect(() => {
+    getAttendingUsers();
+  }, [getAttendingUsers]); // Now it will run whenever post changes
 
   return (
     <>
@@ -132,7 +164,7 @@ const Post = () => {
 
             <div className="bottom">
               <div className="titleContainer">
-                <div className="postTitle">Color Run Event</div>
+                <div className="postTitle">{post && post.title}</div>
                 {isOwner && (
                   <div className="editDelete">
                     <Button style={buttonStyle}>
@@ -152,19 +184,61 @@ const Post = () => {
                   </div>
                 )}
               </div>
-              <br></br>
               <hr></hr>
               <br></br>
-              <div>attending</div>
-              <br></br>
+
               <div className="timelineMap">
                 <div>
+                  <div className="friend-avatars">
+                    {attendingUsers.length > 0 ? (
+                      <>
+                        <Typography
+                          variant="h6"
+                          component="span"
+                          color="#ffffff"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                            marginLeft: "4px",
+                          }}
+                        >
+                          Attending
+                        </Typography>
+                        <AvatarGroup total={attendingUsers.length} max={10}>
+                          {attendingUsers.map((item, index) => (
+                            <Avatar
+                              key={index}
+                              alt={`${item.firstName} ${item.lastName}`}
+                              src={`http://localhost:3001/assets/${item.picturePath}`}
+                              onClick={() => {
+                                navigate(`/profile/${item._id}`);
+                              }}
+                              className="avatar"
+                            />
+                          ))}
+                        </AvatarGroup>
+                      </>
+                    ) : (
+                      <Typography
+                        variant="h6"
+                        component="span"
+                        color="#555"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          marginLeft: "4px",
+                          margin: "3vh 0 3vh 0",
+                        }}
+                      >
+                        No people attending yet !
+                      </Typography>
+                    )}
+                  </div>
+
                   <Timeline sx={{ marginLeft: "-25vw" }}>
                     <TimelineItem>
                       <TimelineSeparator>
                         <TimelineConnector />
-                        <TimelineDot>
-                          <FastfoodIcon />
+                        <TimelineDot sx={{ backgroundColor: "#ff8a9c" }}>
+                          <DescriptionIcon />
                         </TimelineDot>
                         <TimelineConnector />
                       </TimelineSeparator>
@@ -172,20 +246,28 @@ const Post = () => {
                         <Typography
                           variant="h6"
                           component="span"
-                          color="var(--pink-color)"
+                          color="#ffffff"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
                         >
-                          Eat
+                          Description
                         </Typography>
-                        <Typography color="white">
-                          Because you need strength
+                        <Typography
+                          color="#6a6a6a"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
+                        >
+                          {post && truncatedString(post.description)}
                         </Typography>
                       </TimelineContent>
                     </TimelineItem>
                     <TimelineItem>
                       <TimelineSeparator>
                         <TimelineConnector />
-                        <TimelineDot color="primary">
-                          <LaptopMacIcon />
+                        <TimelineDot sx={{ backgroundColor: "#ff8a9c" }}>
+                          <CategoryIcon />
                         </TimelineDot>
                         <TimelineConnector />
                       </TimelineSeparator>
@@ -193,20 +275,28 @@ const Post = () => {
                         <Typography
                           variant="h6"
                           component="span"
-                          color="var(--pink-color)"
+                          color="#ffffff"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
                         >
-                          Code
+                          Category
                         </Typography>
-                        <Typography color="white">
-                          Because it&apos;s awesome!
+                        <Typography
+                          color="#6a6a6a"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
+                        >
+                          {post && post.categoryId}
                         </Typography>
                       </TimelineContent>
                     </TimelineItem>
                     <TimelineItem>
                       <TimelineSeparator>
                         <TimelineConnector />
-                        <TimelineDot color="primary" variant="outlined">
-                          <HotelIcon />
+                        <TimelineDot sx={{ backgroundColor: "#ff8a9c" }}>
+                          <CalendarTodayIcon />
                         </TimelineDot>
                         <TimelineConnector />
                       </TimelineSeparator>
@@ -214,20 +304,29 @@ const Post = () => {
                         <Typography
                           variant="h6"
                           component="span"
-                          color="var(--pink-color)"
+                          color="#ffffff"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
                         >
-                          Sleep
+                          Date and time
                         </Typography>
-                        <Typography color="white">
-                          Because you need rest
+                        <Typography
+                          color="#6a6a6a"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
+                        >
+                          {post &&
+                            post.date.split("/").join(".") + " " + post.time}
                         </Typography>
                       </TimelineContent>
                     </TimelineItem>
                     <TimelineItem>
                       <TimelineSeparator>
                         <TimelineConnector />
-                        <TimelineDot color="secondary">
-                          <RepeatIcon />
+                        <TimelineDot sx={{ backgroundColor: "#ff8a9c" }}>
+                          <LocationOnIcon />
                         </TimelineDot>
                         <TimelineConnector />
                       </TimelineSeparator>
@@ -235,12 +334,25 @@ const Post = () => {
                         <Typography
                           variant="h6"
                           component="span"
-                          color="var(--pink-color)"
+                          color="#ffffff"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
                         >
-                          Repeat
+                          Location
                         </Typography>
-                        <Typography color="white">
-                          Because this is the life you love!
+                        <Typography
+                          color="#6a6a6a"
+                          sx={{
+                            fontFamily: "Quicksand, sans-serif",
+                          }}
+                        >
+                          {post &&
+                            post.location +
+                              " " +
+                              post.locality +
+                              ", " +
+                              post.county}
                         </Typography>
                       </TimelineContent>
                     </TimelineItem>
@@ -251,7 +363,14 @@ const Post = () => {
                     center={[45.8422222, 24.97138888888889]}
                     zoom={6}
                     scrollWheelZoom={true}
-                    style={{ height: "40vh", width: "50vw", zIndex: "-2" }}
+                    style={{
+                      height: "50vh",
+                      width: "55vw",
+                      zIndex: "2",
+                      marginLeft: "3vw",
+                      borderRadius: "20px",
+                      border: "2px solid #ff8a9c",
+                    }}
                   >
                     <TileLayer
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
