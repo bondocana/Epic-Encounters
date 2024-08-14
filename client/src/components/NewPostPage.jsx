@@ -21,6 +21,9 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
+import WhiteEventIcon from "./styles/icons/event-white.png";
+import WhiteNewPostIcon from "./styles/icons/confetti-white.png";
+import WhiteHomeIcon from "./styles/icons/home-white.png";
 
 const newPostSchema = yup.object().shape({
   title: yup.string().required("required"),
@@ -60,7 +63,7 @@ const NewPostPage = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.user._id);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(true);
   const [postId, setPostId] = useState();
 
   //NEW POST
@@ -179,60 +182,98 @@ const NewPostPage = () => {
       {isSubmitted ? ( // Check if the form is submitted
         <div className="container">
           <div className="titlu">
-            Your event has been submitted successfully!
+            Your event has been submitted successfully !
           </div>
 
           <div className="subtitle">
-            The event will be available on the home page after the admin
-            validates it.
+            The event will be available after the admin validates it
           </div>
 
-          <Button
-            onClick={() => {
-              setIsSubmitted(false);
-              navigate(`/post/${postId}`);
-            }}
-            sx={{
-              marginTop: "1rem",
-              backgroundColor: "var(--pink-color)",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "var(--dark-pink-color)",
-              },
-            }}
-          >
-            View The Event
-          </Button>
-          <Button
-            onClick={() => setIsSubmitted(false)}
-            sx={{
-              marginTop: "1rem",
-              backgroundColor: "var(--pink-color)",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "var(--dark-pink-color)",
-              },
-            }}
-          >
-            Add Another Event
-          </Button>
+          <div className="button-group">
+            <Button
+              onClick={() => {
+                setIsSubmitted(false);
+                navigate(`/post/${postId}`);
+              }}
+              sx={{
+                width: "20vw",
+                height: "10vh",
+                backgroundColor: "var(--pink-color)",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "var(--dark-pink-color)",
+                },
+              }}
+            >
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2vw",
+                }}
+              >
+                <img src={WhiteEventIcon} alt="" className="white-image"></img>
+                <span>View The Event</span>
+              </span>
+            </Button>
+            <Button
+              onClick={() => setIsSubmitted(false)}
+              sx={{
+                width: "20vw",
+                height: "10vh",
+                backgroundColor: "var(--pink-color)",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "var(--dark-pink-color)",
+                },
+              }}
+            >
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2vw",
+                }}
+              >
+                <img
+                  src={WhiteNewPostIcon}
+                  alt=""
+                  className="white-image"
+                ></img>
+                <span>Add Another Event</span>
+              </span>
+            </Button>
 
-          <Button
-            onClick={() => {
-              setIsSubmitted(false);
-              navigate("/home");
-            }}
-            sx={{
-              marginTop: "1rem",
-              backgroundColor: "var(--pink-color)",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "var(--dark-pink-color)",
-              },
-            }}
-          >
-            Home Page
-          </Button>
+            <Button
+              onClick={() => {
+                setIsSubmitted(false);
+                navigate("/home");
+              }}
+              sx={{
+                width: "20vw",
+                height: "10vh",
+                backgroundColor: "var(--pink-color)",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "var(--dark-pink-color)",
+                },
+              }}
+            >
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2vw",
+                }}
+              >
+                <img src={WhiteHomeIcon} alt="" className="white-image"></img>
+                <span>Home Page</span>
+              </span>
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="container">

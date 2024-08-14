@@ -1,5 +1,6 @@
 :root {
   --pink-color: #ffbdc7;
+  --dark-pink-color: #ff8a9c;
 }
 
 body {
@@ -27,13 +28,15 @@ body {
   color: #ffbdc7;
   font-size: 32px;
   font-weight: 600;
-  margin: 5vh 3vh 5vh 3vh;
+  margin: 5vh 3vh 3vh;
+  margin-top: 20vh;
 }
 
 .subtitle {
   display: flex;
   align-items: center;
-  color: #ffbdc7;
+  justify-content: center;
+  color: #555;
   font-size: 24px;
   font-weight: 400;
   margin: 1vh 1vw;
@@ -53,4 +56,17 @@ body {
     align-items: center;
     gap: 2vw;
   }
+}
+
+.button-group {
+  margin-top: 10vh;
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+  justify-content: center;
+}
+
+.white-image {
+  height: 30px;
+  width: 30px;
 }
