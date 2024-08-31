@@ -5,7 +5,7 @@ import icon from "./styles/icons/logout-icon.png";
 import newEvent from "./styles/icons/new-event.png";
 import home from "./styles/icons/home-icon.png";
 import admin from "./styles/icons/admin-icon.png";
-import friends from "./styles/icons/friends-icon.png";
+// import friends from "./styles/icons/friends-icon.png";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const SideMenu = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
+  const isAdmin = useSelector((state) => state.isAdmin);
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/users/${userId}`, {
@@ -70,15 +71,17 @@ const SideMenu = () => {
           <span> Add Event</span>
         </div>
 
-        <div className="tab">
+        {/* <div className="tab" onClick={() => navigate(`/profile/${userId}`)}>
           <img src={friends} alt="" style={{ height: "30px", width: "30px" }} />
           <span> Friends</span>
-        </div>
+        </div> */}
 
-        <div className="tab">
-          <img src={admin} alt="" style={{ height: "30px", width: "30px" }} />
-          <span> Admin</span>
-        </div>
+        {isAdmin && (
+          <div className="tab" onClick={() => navigate("/admin")}>
+            <img src={admin} alt="" style={{ height: "30px", width: "30px" }} />
+            <span> Admin</span>
+          </div>
+        )}
       </div>
       <div className="logout" onClick={() => dispatch(setLogout())}>
         <img src={icon} alt="" style={{ height: "30px", width: "30px" }} />

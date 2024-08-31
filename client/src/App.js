@@ -8,10 +8,12 @@ import PostPage from "components/PostPage";
 import NewPost from "components/NewPostPage";
 import DefaultLayout from "components/DefaultLayout";
 import GuestLayout from "components/GuestLayout";
+import AdminDashboard from "components/AdminDashboard";
 import { useSelector } from "react-redux";
 
 function App() {
   const isAuth = Boolean(useSelector((state) => state.token));
+  const isAdmin = Boolean(useSelector((state) => state.isAdmin));
 
   return (
     <>
@@ -37,6 +39,10 @@ function App() {
             <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/newPost" element={<NewPost />} />
             <Route path="/post/:postId" element={<PostPage />} />
+            <Route
+              path="/admin"
+              element={isAdmin ? <AdminDashboard /> : <Navigate to="/home" />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

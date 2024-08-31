@@ -40,6 +40,7 @@
 }
 
 .card-content {
+  font-family: "Quicksand", sans-serif;
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   width: 100%;

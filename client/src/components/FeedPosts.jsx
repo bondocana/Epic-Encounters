@@ -20,7 +20,7 @@ const FeedPosts = () => {
   const navigate = useNavigate();
 
   const truncatedString = (str) => {
-    return str.length > 230 ? `${str.substring(0, 230)}...` : str;
+    return str.length > 170 ? `${str.substring(0, 170)}...` : str;
   };
 
   // Funcție pentru a prelua toate categoriile
@@ -113,19 +113,19 @@ const FeedPosts = () => {
             value={searchQuery}
             onChange={handleSearchInputChange}
           />
-          <IconButton>
-            <Search />
-          </IconButton>
         </div>
-        <button onClick={getPosts}>Afișează toate postările</button>
+        <div onClick={getPosts} className="all-posts">
+          All Posts
+        </div>
         <div className="category-buttons">
           {categories.map((category) => (
-            <button
+            <div
               key={category._id}
               onClick={() => handleCategorySelection(category._id)}
+              className="category-button"
             >
               {category.name}
-            </button>
+            </div>
           ))}
         </div>
       </div>

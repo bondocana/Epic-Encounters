@@ -108,6 +108,7 @@ const RegisterPage = () => {
           setLogin({
             user: loggedIn.user,
             token: loggedIn.token,
+            isAdmin: loggedIn.user.isAdmin,
           })
         );
         navigate("/home");
@@ -207,6 +208,11 @@ const RegisterPage = () => {
                   name="firstName"
                   error={
                     Boolean(touched.firstName) && Boolean(errors.firstName)
+                  }
+                  helperText={
+                    touched.firstName && errors.firstName
+                      ? errors.firstName
+                      : ""
                   }
                   sx={{
                     width: "17vw",
@@ -480,7 +486,7 @@ const RegisterPage = () => {
                   )}
                 </Dropzone>
               </Box>
-                  
+
               {/** email and password */}
               <div className="label-container2">
                 {/* phone */}
@@ -491,8 +497,9 @@ const RegisterPage = () => {
                   value={values.phone}
                   name="phone"
                   error={
-                    Boolean(touched.phone) && Boolean(errors.phone)
+                    Boolean(touched.firstName) && Boolean(errors.firstName)
                   }
+                  helperText={touched.email && errors.email ? errors.email : ""}
                   sx={{
                     width: "11.5vw",
                     "& .MuiFormLabel-root": {

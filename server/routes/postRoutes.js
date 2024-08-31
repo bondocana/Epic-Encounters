@@ -7,7 +7,12 @@ import {
   deletePost,
   updatePost,
   getUsersPosts,
-  getAttendingUsers
+  getAttendingUsers,
+  checkUserAttendance,
+  addUserToAttending,
+  removeUserFromAttending,
+  getUnapprovedPosts,
+  getPostsUserAttending,
 } from "../controllers/postController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -17,8 +22,14 @@ const router = express.Router();
 // get a post
 
 router.get("/date", verifyToken, getPostsByDate);
+router.post("/check-user-attendance", verifyToken, checkUserAttendance);
+router.post("/add-to-attending", verifyToken, addUserToAttending);
+router.post("/remove-from-attending", verifyToken, removeUserFromAttending);
+router.get("/unapproved", verifyToken, getUnapprovedPosts);
+
 router.get("/:id", verifyToken, getPost);
 router.get("/:userId/county", verifyToken, getUserCountyPosts);
+router.get("/:userId/user-attending", getPostsUserAttending);
 router.get("/user/:userId", verifyToken, getUsersPosts);
 router.get("/category/:categoryid", verifyToken, getPostsByCategoryAndDate);
 router.delete("/:id", verifyToken, deletePost);

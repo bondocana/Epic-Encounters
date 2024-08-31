@@ -14,9 +14,10 @@ import Typography from "@mui/material/Typography";
 import editIcon from "./styles/icons/edit-icon.png";
 import deleteIcon from "./styles/icons/delete-icon.png";
 import CustomModal from "./CustomModal";
+import EditModal from "./EditModal";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import DescriptionIcon from "@mui/icons-material/Description";
+import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -27,14 +28,13 @@ const Post = () => {
   const { postId } = useParams();
   const token = useSelector((state) => state.token);
   const userId2 = useSelector((state) => state.user._id);
+  const isAdmin = useSelector((state) => state.isAdmin);
   const [post, setPost] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [isOwner, setIsOwner] = useState();
-
-  const truncatedString = (str) => {
-    return str.length > 45 ? `${str.substring(0, 45)}...` : str;
-  };
+  const [isAttending, setIsAttending] = useState();
+  const [coordinates, setCoordinates] = useState(null);
 
   // GET POST
   const getPost = useCallback(async () => {
@@ -93,6 +93,7 @@ const Post = () => {
     borderRadius: "5px",
     background: "none",
     cursor: "pointer",
+    color: "#ffbdc7",
   };
 
   const deletePost = useCallback(async () => {
@@ -110,11 +111,49 @@ const Post = () => {
     }
   }, [postId, token]);
 
+  // UPDATE A POST
+  const updatePost = useCallback(
+    async (editedPost) => {
+      try {
+        console.log(post);
+        const response = await fetch(
+          `http://localhost:3001/posts/${post._id}`,
+          {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: editedPost.title,
+              description: editedPost.description,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          const updatedPost = await response.json();
+          setPost(updatedPost);
+        } else {
+          console.error("Failed to update the post");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+    [setPost]
+  );
+
   const [showModal, setShowModal] = useState(false);
   const handleDelete = () => {
     deletePost();
     setShowModal(false);
     navigate("/home");
+  };
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const handleSave = (editedPost) => {
+    updatePost(editedPost);
   };
 
   const [attendingUsers, setAttendingUsers] = useState([]);
@@ -144,6 +183,115 @@ const Post = () => {
     getAttendingUsers();
   }, [getAttendingUsers]); // Now it will run whenever post changes
 
+  // GET COORDINATES
+  const getCoordinates = useCallback(async () => {
+    try {
+      if (post) {
+        const response = await fetch(
+          `http://localhost:3001/api/get-coordinates`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              county: post.county,
+              locality: post.locality,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          setCoordinates({ lat: data.latitude, lon: data.longitude });
+        } else {
+          setCoordinates(null);
+          throw new Error("Failed to fetch coordinates.");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching timeline posts:", error);
+    }
+  }, [post]);
+
+  useEffect(() => {
+    getCoordinates();
+  }, [getCoordinates]); // Now it will run whenever post changes
+
+  const checkUserAttendance = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/posts/check-user-attendance",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include your JWT token here if necessary
+          },
+          body: JSON.stringify({
+            userId: userId2, // The user whose attendance is being checked
+            postId: postId, // The post to check attendance against
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      setIsAttending(data.IsAttending);
+    } catch (error) {
+      console.error("Error checking user attendance:", error);
+    }
+  }, [postId]);
+
+  useEffect(() => {
+    checkUserAttendance();
+  }, [token]);
+
+  const addUserToAttending = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/posts/add-to-attending",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include your JWT token here if necessary
+          },
+          body: JSON.stringify({ userId: userId2, postId: postId }),
+        }
+      );
+
+      const data = await response.json();
+      setIsAttending(true);
+      getAttendingUsers();
+    } catch (error) {
+      console.error("Error adding user to attending list:", error);
+    }
+  }, []);
+
+  const removeUserFromAttending = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/posts/remove-from-attending",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include your JWT token here if necessary
+          },
+          body: JSON.stringify({ userId: userId2, postId: postId }),
+        }
+      );
+
+      const data = await response.json();
+      setIsAttending(false);
+      getAttendingUsers();
+    } catch (error) {
+      console.error("Error adding user to attending list:", error);
+    }
+  }, []);
+
   return (
     <>
       <link
@@ -165,28 +313,109 @@ const Post = () => {
             <div className="bottom">
               <div className="titleContainer">
                 <div className="postTitle">{post && post.title}</div>
-                {isOwner && (
-                  <div className="editDelete">
-                    <Button style={buttonStyle}>
-                      <img src={editIcon} alt=""></img>
-                    </Button>
-                    <Button
-                      style={buttonStyle}
-                      onClick={() => setShowModal(true)}
-                    >
-                      <img src={deleteIcon} alt=""></img>
-                    </Button>
-                    <CustomModal
-                      show={showModal}
-                      handleClose={() => setShowModal(false)}
-                      handleConfirm={handleDelete}
-                    />
+                {isAdmin ? (
+                  <div>
+                    <div className="editDelete" style={{ marginRight: "20px" }}>
+                      {!isAttending && (
+                        <Button
+                          style={buttonStyle}
+                          onClick={() => addUserToAttending()}
+                        >
+                          Attend
+                        </Button>
+                      )}
+                      {isAttending && (
+                        <Button
+                          style={buttonStyle}
+                          onClick={() => removeUserFromAttending()}
+                        >
+                          Unattend
+                        </Button>
+                      )}
+                      <Button
+                        style={buttonStyle}
+                        onClick={() => setShowEditModal(true)}
+                      >
+                        <img src={editIcon} alt=""></img>
+                      </Button>
+                      <Button
+                        style={buttonStyle}
+                        onClick={() => setShowModal(true)}
+                      >
+                        <img src={deleteIcon} alt=""></img>
+                      </Button>
+                      <CustomModal
+                        show={showModal}
+                        handleClose={() => setShowModal(false)}
+                        handleConfirm={handleDelete}
+                      />
+                      {post && (
+                        <EditModal
+                          show={showEditModal}
+                          handleClose={() => setShowEditModal(false)}
+                          post={post}
+                          handleSave={handleSave}
+                        />
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    {isOwner && (
+                      <div
+                        className="editDelete"
+                        style={{ marginRight: "20px" }}
+                      >
+                        <Button
+                          style={buttonStyle}
+                          onClick={() => setShowEditModal(true)}
+                        >
+                          <img src={editIcon} alt=""></img>
+                        </Button>
+                        <Button
+                          style={buttonStyle}
+                          onClick={() => setShowModal(true)}
+                        >
+                          <img src={deleteIcon} alt=""></img>
+                        </Button>
+                        <CustomModal
+                          show={showModal}
+                          handleClose={() => setShowModal(false)}
+                          handleConfirm={handleDelete}
+                        />
+                        {post && (
+                          <EditModal
+                            show={showEditModal}
+                            handleClose={() => setShowEditModal(false)}
+                            post={post}
+                            handleSave={handleSave}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {!isOwner && !isAttending && (
+                      <Button
+                        style={buttonStyle}
+                        sx={{ marginRight: "20px" }}
+                        onClick={() => addUserToAttending()}
+                      >
+                        Attend
+                      </Button>
+                    )}
+                    {!isOwner && isAttending && (
+                      <Button
+                        style={buttonStyle}
+                        sx={{ marginRight: "20px" }}
+                        onClick={() => removeUserFromAttending()}
+                      >
+                        Unattend
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>
-              <hr></hr>
-              <br></br>
-
+              <hr />
+              <br />
               <div className="timelineMap">
                 <div>
                   <div className="friend-avatars">
@@ -238,7 +467,7 @@ const Post = () => {
                       <TimelineSeparator>
                         <TimelineConnector />
                         <TimelineDot sx={{ backgroundColor: "#ff8a9c" }}>
-                          <DescriptionIcon />
+                          <PersonIcon />
                         </TimelineDot>
                         <TimelineConnector />
                       </TimelineSeparator>
@@ -251,15 +480,20 @@ const Post = () => {
                             fontFamily: "Quicksand, sans-serif",
                           }}
                         >
-                          Description
+                          Posted by
                         </Typography>
                         <Typography
                           color="#6a6a6a"
                           sx={{
                             fontFamily: "Quicksand, sans-serif",
                           }}
+                          onClick={() => {
+                            navigate(`/profile/${user._id}`);
+                          }}
                         >
-                          {post && truncatedString(post.description)}
+                          <span className="span-link">
+                            {user && user.firstName + " " + user.lastName}
+                          </span>
                         </Typography>
                       </TimelineContent>
                     </TimelineItem>
@@ -376,14 +610,28 @@ const Post = () => {
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={[51.505, -0.09]}>
-                      <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
-                      </Popup>
-                    </Marker>
+                    {coordinates && (
+                      <Marker position={[coordinates.lat, coordinates.lon]}>
+                        <Popup>{post && post.location}</Popup>
+                      </Marker>
+                    )}
                   </MapContainer>
                 </div>
               </div>
+              <br />
+              <br />
+              <div className="titleContainer">
+                <div className="postTitle">Description</div>
+              </div>
+              <hr />
+              <br />
+              <br />
+              <div className="post-description">
+                {post &&
+                  post.description.charAt(0).toUpperCase() +
+                    post.description.slice(1)}
+              </div>
+              <br />
             </div>
           </>
         )}

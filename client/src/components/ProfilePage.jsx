@@ -10,6 +10,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import locationIcon from "./styles/icons/location-icon.png";
 import { useNavigate } from "react-router-dom";
+import FriendsList from "./FriendsList";
+import FriendRequests from "./FriendRequests";
 
 const ProfilePage = () => {
   const token = useSelector((state) => state.token);
@@ -20,7 +22,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
 
   const truncatedString = (str) => {
-    return str.length > 230 ? `${str.substring(0, 230)}...` : str;
+    return str.length > 170 ? `${str.substring(0, 170)}...` : str;
   };
 
   useEffect(() => {
@@ -45,7 +47,9 @@ const ProfilePage = () => {
   };
 
   const [posts, setPosts] = useState([]);
+  const [attendingPosts, setAttendingPosts] = useState([]);
 
+  // GET USERS POSTS
   const getUsersPosts = useCallback(async () => {
     try {
       const response = await fetch(
@@ -66,6 +70,29 @@ const ProfilePage = () => {
     getUsersPosts();
   }, [getUsersPosts]);
 
+  // GET USERS ATTENDING POSTS
+  const getUsersAttendingPosts = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/posts/${userId}/user-attending`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setAttendingPosts(data);
+    } catch (error) {
+      console.error("Error fetching timeline posts:", error);
+    }
+  }, [token, userId]);
+
+  useEffect(() => {
+    getUsersAttendingPosts();
+  }, [getUsersAttendingPosts]);
+
   // GET USER
   const getUser = useCallback(async () => {
     try {
@@ -77,6 +104,7 @@ const ProfilePage = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      setValue("1");
       setUser(data);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -87,6 +115,117 @@ const ProfilePage = () => {
     getUser();
   }, [getUser]);
 
+  const [areFriends, setAreFriends] = useState();
+
+  const checkIfUsersAreFriends = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/users/are-users-friends",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Assuming token-based authentication
+          },
+          body: JSON.stringify({ userId1: userId, userId2: userId2 }),
+        }
+      );
+
+      const data = await response.json();
+      setAreFriends(data.areFriends);
+    } catch (error) {
+      console.error("Error:", error);
+      return { error: error.message };
+    }
+  }, [token, userId]);
+
+  useEffect(() => {
+    checkIfUsersAreFriends();
+  }, [checkIfUsersAreFriends]);
+
+  // UNFOLLOW USER
+  const unfollowUser = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/users/unfollow-user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include your JWT token here if necessary
+          },
+          body: JSON.stringify({
+            userId1: userId2,
+            userId2: userId,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      checkIfUsersAreFriends();
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
+    }
+  };
+
+  // follow a user / send friend request
+  const sendFriendRequest = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/users/send-friend-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId1: userId2, userId2: userId }),
+        }
+      );
+
+      const data = await response.json();
+      checkIfFriendRequestSent(userId2, userId);
+      checkIfUsersAreFriends();
+      setSentRequest(responseRequest);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const [sentRequest, setSentRequest] = useState();
+  const [receivedRequest, setReceivedRequest] = useState();
+  const [responseRequest, setResponseRequest] = useState();
+
+  const checkIfFriendRequestSent = async (userId1, userId2) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/users/check-friend-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Assuming JWT for auth
+          },
+          body: JSON.stringify({ userId1: userId1, userId2: userId2 }),
+        }
+      );
+
+      const data = await response.json();
+      setResponseRequest(data.hasSentRequest);
+      checkIfUsersAreFriends();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkIfFriendRequestSent(userId2, userId);
+    setSentRequest(responseRequest);
+    console.log(sentRequest);
+    checkIfFriendRequestSent(userId, userId2);
+    setReceivedRequest(responseRequest);
+  }, []);
+
   return (
     <div className="profile-container">
       <div className="left-container">
@@ -94,7 +233,25 @@ const ProfilePage = () => {
           <div className="name">
             {user && user.firstName + " " + user.lastName}
           </div>
-          <Button style={buttonStyle}>Follow</Button>
+          {!isOwner && areFriends && (
+            <Button style={buttonStyle} onClick={() => unfollowUser()}>
+              Unfollow
+            </Button>
+          )}
+          {!isOwner && !areFriends && (
+            <Button style={buttonStyle} onClick={() => sendFriendRequest()}>
+              Follow
+            </Button>
+          )}
+          {!isOwner && !areFriends && sentRequest ? (
+            <div>A friend request has been sent to this user</div>
+          ) : (
+            !isOwner &&
+            !areFriends &&
+            receivedRequest && (
+              <div>This user has sent you a friend request</div>
+            )
+          )}
         </div>
         <div style={{ marginTop: "10px" }}>
           <Box sx={{ width: "100%", typography: "body1" }}>
@@ -115,7 +272,7 @@ const ProfilePage = () => {
                       "&.Mui-selected": { color: "pink" },
                       "font-family": "Quicksand, sans-serif",
                     }}
-                    label="Posts"
+                    label="Events"
                     value="1"
                   />
                   <Tab
@@ -124,9 +281,29 @@ const ProfilePage = () => {
                       "&.Mui-selected": { color: "pink" },
                       "font-family": "Quicksand, sans-serif",
                     }}
-                    label="Friends"
+                    label="Attending"
                     value="2"
                   />
+                  <Tab
+                    sx={{
+                      color: "white",
+                      "&.Mui-selected": { color: "pink" },
+                      "font-family": "Quicksand, sans-serif",
+                    }}
+                    label="Friends"
+                    value="3"
+                  />
+                  {isOwner && (
+                    <Tab
+                      sx={{
+                        color: "white",
+                        "&.Mui-selected": { color: "pink" },
+                        "font-family": "Quicksand, sans-serif",
+                      }}
+                      label="Friend Requests"
+                      value="4"
+                    />
+                  )}
                 </TabList>
               </Box>
               <TabPanel sx={{ color: "white" }} value="1">
@@ -196,14 +373,95 @@ const ProfilePage = () => {
                     ))
                   ) : (
                     <div className="message2">
-                      This user has not created any posts.
+                      This user has not created any posts
                     </div>
                   )}
                 </div>
               </TabPanel>
               <TabPanel sx={{ color: "white" }} value="2">
-                Item Two
+                <div>
+                  <div className="feed-posts2">
+                    {attendingPosts.length > 0 ? (
+                      attendingPosts.map((item) => (
+                        <div
+                          className="post2"
+                          key={item._id}
+                          onClick={() => {
+                            navigate(`/post/${item._id}`);
+                          }}
+                        >
+                          <div
+                            className="picture2"
+                            style={{
+                              backgroundImage: `url(http://localhost:3001/assets/${item.picturePath})`,
+                            }}
+                          ></div>
+                          <div className="info2">
+                            <span
+                              style={{
+                                fontSize: "20px",
+                                fontWeight: "1000",
+                                marginBottom: "15px",
+                              }}
+                            >
+                              {item.title}
+                              <span
+                                style={{
+                                  color: "#dedede",
+                                  fontSize: "13px",
+                                  fontWeight: "100",
+                                  marginLeft: "20px",
+                                }}
+                              >
+                                <img
+                                  src={locationIcon}
+                                  alt=""
+                                  style={{ height: "12px", width: "12px" }}
+                                ></img>
+                                {" " + item.locality + ", " + item.county}
+                              </span>
+                            </span>
+                            <span style={{ color: "white", lineHeight: 1.2 }}>
+                              {truncatedString(item.description)}
+                            </span>
+                          </div>
+                          <div className="date">
+                            <div>
+                              {new Date(
+                                item.date.split("/").reverse().join("-")
+                              ).getDate()}
+                            </div>
+                            <div>
+                              {new Date(
+                                item.date.split("/").reverse().join("-")
+                              )
+                                .toLocaleString("default", { month: "short" })
+                                .toUpperCase()}
+                            </div>
+                            <div>
+                              {new Date(
+                                item.date.split("/").reverse().join("-")
+                              ).getFullYear()}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="message2">
+                        There are currently no events attended by this user
+                      </div>
+                    )}
+                  </div>
+                </div>
               </TabPanel>
+              <TabPanel sx={{ color: "white" }} value="3">
+                <FriendsList />
+              </TabPanel>
+              {isOwner && (
+                <TabPanel sx={{ color: "white" }} value="4">
+                  <FriendRequests />
+                </TabPanel>
+              )}
             </TabContext>
           </Box>
         </div>

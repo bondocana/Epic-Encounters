@@ -63,7 +63,7 @@ const NewPostPage = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const userId = useSelector((state) => state.user._id);
-  const [isSubmitted, setIsSubmitted] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [postId, setPostId] = useState();
 
   //NEW POST
@@ -181,7 +181,7 @@ const NewPostPage = () => {
     <div className="body">
       {isSubmitted ? ( // Check if the form is submitted
         <div className="container">
-          <div className="titlu">
+          <div className="titlu" style={{ "margin-top": "20vh" }}>
             Your event has been submitted successfully !
           </div>
 
@@ -214,7 +214,9 @@ const NewPostPage = () => {
                 }}
               >
                 <img src={WhiteEventIcon} alt="" className="white-image"></img>
-                <span>View The Event</span>
+                <span style={{ fontFamily: "Quicksand, sans-serif" }}>
+                  View Event
+                </span>
               </span>
             </Button>
             <Button
@@ -242,7 +244,9 @@ const NewPostPage = () => {
                   alt=""
                   className="white-image"
                 ></img>
-                <span>Add Another Event</span>
+                <span style={{ fontFamily: "Quicksand, sans-serif" }}>
+                  Add Another Event
+                </span>
               </span>
             </Button>
 
@@ -270,7 +274,9 @@ const NewPostPage = () => {
                 }}
               >
                 <img src={WhiteHomeIcon} alt="" className="white-image"></img>
-                <span>Home Page</span>
+                <span style={{ fontFamily: "Quicksand, sans-serif" }}>
+                  Home Page
+                </span>
               </span>
             </Button>
           </div>
@@ -308,6 +314,7 @@ const NewPostPage = () => {
                         width: "17vw",
                         "& .MuiFormLabel-root": {
                           color: "white",
+                          fontFamily: "Quicksand, sans-serif",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
                           color: "var(--pink-color)", // Label color when focused
@@ -318,6 +325,7 @@ const NewPostPage = () => {
                           },
                         "& .MuiOutlinedInput-root": {
                           color: "white", // Text color
+                          fontFamily: "Quicksand, sans-serif",
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "white", // Base outline color
                           },
@@ -327,6 +335,7 @@ const NewPostPage = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "var(--pink-color)", // Text color for input
+                          fontFamily: "Quicksand, sans-serif",
                         },
                       }}
                     />
@@ -344,6 +353,7 @@ const NewPostPage = () => {
                         width: "17vw",
                         "& .MuiFormLabel-root": {
                           color: "white",
+                          fontFamily: "Quicksand, sans-serif",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
                           color: "var(--pink-color)", // Label color when focused
@@ -354,6 +364,7 @@ const NewPostPage = () => {
                           },
                         "& .MuiOutlinedInput-root": {
                           color: "white", // Text color
+                          fontFamily: "Quicksand, sans-serif",
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "white", // Base outline color
                           },
@@ -363,6 +374,7 @@ const NewPostPage = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "var(--pink-color)", // Text color for input
+                          fontFamily: "Quicksand, sans-serif",
                         },
                       }}
                     />
@@ -380,6 +392,7 @@ const NewPostPage = () => {
                                 ? "red"
                                 : "var(--pink-color)",
                           },
+                          fontFamily: "Quicksand, sans-serif",
                         }}
                       >
                         Category
@@ -403,6 +416,8 @@ const NewPostPage = () => {
                               borderColor: "var(--pink-color)",
                             },
                           color: "var(--pink-color)", // Text color
+                          fontFamily: "Quicksand, sans-serif",
+
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor:
                               touched.categoryId && errors.categoryId
@@ -430,13 +445,7 @@ const NewPostPage = () => {
                           <MenuItem
                             key={category.name}
                             value={category.name}
-                            // sx={{
-                            //   backgroundColor: "#222222",
-                            //   "&:hover": {
-                            //     backgroundColor: "#999999",
-                            //   },
-                            //   color: "white", // Optional: set text color for better contrast
-                            // }}
+                            sx={{ "font-family": "Quicksand, sans-serif" }}
                           >
                             {category.name}
                           </MenuItem>
@@ -485,7 +494,13 @@ const NewPostPage = () => {
                                 color: "var(--pink-color)",
                               }}
                             >
-                              <Typography>{values.picture.name}</Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: "Quicksand, sans-serif",
+                                }}
+                              >
+                                {values.picture.name}
+                              </Typography>
                               <EditOutlinedIcon />
                             </div>
                           )}
@@ -528,6 +543,7 @@ const NewPostPage = () => {
                                 ? "red"
                                 : "var(--pink-color)",
                           },
+                          fontFamily: "Quicksand, sans-serif",
                         }}
                       >
                         County
@@ -552,6 +568,8 @@ const NewPostPage = () => {
                               borderColor: "var(--pink-color)",
                             },
                           color: "var(--pink-color)", // Text color
+                          fontFamily: "Quicksand, sans-serif",
+
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "white", // Base outline color
                           },
@@ -573,6 +591,7 @@ const NewPostPage = () => {
                           <MenuItem
                             key={county.idCounty}
                             value={county.idCounty}
+                            sx={{ "font-family": "Quicksand, sans-serif" }}
                           >
                             {county.name}
                           </MenuItem>
@@ -593,6 +612,7 @@ const NewPostPage = () => {
                                 ? "red"
                                 : "var(--pink-color)",
                           },
+                          fontFamily: "Quicksand, sans-serif",
                         }}
                       >
                         Locality
@@ -615,6 +635,8 @@ const NewPostPage = () => {
                               borderColor: "var(--pink-color)",
                             },
                           color: "var(--pink-color)", // Text color
+                          fontFamily: "Quicksand, sans-serif",
+
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor:
                               touched.locality && errors.locality
@@ -642,13 +664,7 @@ const NewPostPage = () => {
                           <MenuItem
                             key={locality.idLocality}
                             value={locality.idLocality}
-                            // sx={{
-                            //   backgroundColor: "#222222",
-                            //   "&:hover": {
-                            //     backgroundColor: "#999999",
-                            //   },
-                            //   color: "white", // Optional: set text color for better contrast
-                            // }}
+                            sx={{ "font-family": "Quicksand, sans-serif" }}
                           >
                             {locality.name}
                           </MenuItem>
@@ -671,6 +687,7 @@ const NewPostPage = () => {
                         width: "17vw",
                         "& .MuiFormLabel-root": {
                           color: "white",
+                          fontFamily: "Quicksand, sans-serif",
                         },
                         "& .MuiFormLabel-root.Mui-focused": {
                           color: "var(--pink-color)", // Label color when focused
@@ -681,6 +698,8 @@ const NewPostPage = () => {
                           },
                         "& .MuiOutlinedInput-root": {
                           color: "white", // Text color
+                          fontFamily: "Quicksand, sans-serif",
+
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "white", // Base outline color
                           },
@@ -690,6 +709,7 @@ const NewPostPage = () => {
                         },
                         "& .MuiInputBase-input": {
                           color: "var(--pink-color)", // Text color for input
+                          fontFamily: "Quicksand, sans-serif",
                         },
                       }}
                     />
@@ -723,10 +743,12 @@ const NewPostPage = () => {
                           color: "white",
                           "& .MuiInputBase-input": {
                             color: "white",
+                            fontFamily: "Quicksand, sans-serif",
                           },
                           "& .MuiOutlinedInput-root": {
                             "& fieldset": {
                               borderColor: "white",
+                              fontFamily: "Quicksand, sans-serif",
                             },
                             "&:hover fieldset": {
                               borderColor: "white",
@@ -736,6 +758,7 @@ const NewPostPage = () => {
                             },
                           },
                           "& .MuiInputLabel-root": {
+                            fontFamily: "Quicksand, sans-serif",
                             color: "white",
                           },
                           "& .MuiInputLabel-root.Mui-focused": {
@@ -743,6 +766,7 @@ const NewPostPage = () => {
                           },
                           "& .MuiSvgIcon-root": {
                             color: "white",
+                            fontFamily: "Quicksand, sans-serif",
                           },
                         }}
                       />
@@ -758,16 +782,23 @@ const NewPostPage = () => {
                           setSelectedTime(newValue);
                           setFieldValue("time", newValue);
                         }}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{ "font-family": "Quicksand, sans-serif" }}
+                            {...params}
+                          />
+                        )}
                         ampm={false} // This line disables AM/PM and sets the time picker to 24-hour format
                         sx={{
                           color: "white",
                           "& .MuiInputBase-input": {
                             color: "white",
+                            fontFamily: "Quicksand, sans-serif",
                           },
                           "& .MuiOutlinedInput-root": {
                             "& fieldset": {
                               borderColor: "white",
+                              fontFamily: "Quicksand, sans-serif",
                             },
                             "&:hover fieldset": {
                               borderColor: "white",
@@ -778,12 +809,14 @@ const NewPostPage = () => {
                           },
                           "& .MuiInputLabel-root": {
                             color: "white",
+                            fontFamily: "Quicksand, sans-serif",
                           },
                           "& .MuiInputLabel-root.Mui-focused": {
                             color: "white",
                           },
                           "& .MuiSvgIcon-root": {
                             color: "white",
+                            fontFamily: "Quicksand, sans-serif",
                           },
                         }}
                       />
@@ -811,6 +844,7 @@ const NewPostPage = () => {
                         "&:active": {
                           backgroundColor: "#b2b2b2",
                         },
+                        fontFamily: "Quicksand, sans-serif",
                       }}
                     >
                       Post the Event!

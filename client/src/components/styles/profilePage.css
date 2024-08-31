@@ -121,7 +121,7 @@
   justify-content: flex-start;
 
   width: 60vw; /* Make posts take full width of the feed */
-  max-height: 120px;
+  min-height: 120px;
   margin-bottom: 10px; /* Space between posts */
   margin-top: 10px;
   padding: 0; /* Optional: padding inside the post */

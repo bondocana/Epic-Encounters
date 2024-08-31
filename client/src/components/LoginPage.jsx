@@ -38,6 +38,7 @@ const LoginPage = () => {
         setLogin({
           user: loggedIn.user,
           token: loggedIn.token,
+          isAdmin: loggedIn.user.isAdmin,
         })
       );
       navigate("/home");
@@ -91,7 +92,7 @@ const LoginPage = () => {
                   onChange={handleChange}
                   value={values.email}
                   name="email"
-                  error={Boolean(touched.email) && Boolean(errors.email)} // Boolean(touched.email) &&
+                  error={Boolean(touched.email) && Boolean(errors.email)}
                   sx={{
                     width: "24vw",
                     "& .MuiFormLabel-root": {
