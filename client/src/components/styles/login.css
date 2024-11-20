@@ -1,0 +1,76 @@
+:root {
+  --pink-color: #ffbdc7;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
+.body {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+.form-container > form {
+  background-color: #222222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4vh;
+  font-family: "Quicksand", sans-serif;
+  height: 90vh;
+  border-radius: 70px;
+  margin: 5vh 0;
+
+  .title {
+    color: #ffbdc7;
+    font-size: 32px;
+    font-weight: 600;
+  }
+}
+
+.form-container-login > form {
+  background-color: #222222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4vh;
+  font-family: "Quicksand", sans-serif;
+  height: 70vh;
+  border-radius: 70px;
+  margin: 15vh 0;
+  width: 39vw;
+
+  .title {
+    color: #ffbdc7;
+    font-size: 32px;
+    font-weight: 600;
+  }
+}
+
+.label-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9vw;
+}
+
+.label-container2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.label-container-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+}

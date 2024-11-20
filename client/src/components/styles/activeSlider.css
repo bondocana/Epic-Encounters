@@ -1,0 +1,79 @@
+.active-slider {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 93vw;
+  height: 30vh;
+  position: fixed;
+  background-color: #222222;
+  top: 0;
+  right: 0;
+}
+
+.card {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px #5c5c5c;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: flex-end;
+  padding: 9px;
+  margin: 25px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 15px;
+}
+
+.card-content {
+  font-family: "Quicksand", sans-serif;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.card p {
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+
+.card-arrow {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 20px;
+}
+.card-arrow:hover {
+  cursor: pointer;
+}
+
+/* To change the active bullet color */
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #ffbdc7; /* Change this to the color you want */
+}

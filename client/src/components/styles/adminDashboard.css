@@ -1,0 +1,312 @@
+:root {
+  --pink-color: #ffbdc7;
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  width: 87vw;
+  position: fixed;
+  margin-left: 7vw;
+  height: 90vh;
+  gap: 3vw;
+  padding: 5vh 3vw;
+  font-family: "Quicksand", sans-serif;
+}
+
+.admin-title {
+  color: var(--pink-color);
+  font-size: 27px;
+  font-weight: 400;
+  margin-top: 1vh;
+}
+
+.confirm-events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  width: 88vw;
+  height: 76vh;
+  position: fixed;
+  bottom: 0; /* Position it at the bottom */
+  left: 63%; /* Shift it to the center horizontally */
+  transform: translateX(-63%); /* Adjust for half of its own width */
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+.confirm-events-container::-webkit-scrollbar {
+  width: 14px; /* Width of the scrollbar */
+}
+
+.confirm-events-container::-webkit-scrollbar-track {
+  background: #141414; /* Background of the track */
+}
+
+.confirm-events-container::-webkit-scrollbar-thumb {
+  background-color: #555; /* maybe roz? ffbdc7*/
+  border-radius: 8px; /* Optional: rounded corners */
+  border: 3px solid #141414; /* Optional: border around the thumb */
+}
+
+.confirm-events-container::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Color of the scrollbar thumb when hovered */
+}
+
+.post3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  width: 75vw; /* Make posts take full width of the feed */
+  min-height: 120px;
+  margin-bottom: 10px; /* Space between posts */
+  margin-top: 10px;
+  padding: 0; /* Optional: padding inside the post */
+  box-shadow: 0 2px 5px rgba(79, 75, 75, 0.5); /* Optional: add shadow to posts */
+  border-radius: 10px; /* Optional: rounded corners */
+  border: 3px solid #555;
+  color: #ffbdc7;
+  overflow: hidden;
+}
+
+.post3:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+
+.info3 {
+  flex-grow: 1; /* Make the info section take the remaining space */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-family: "Quicksand", sans-serif;
+  max-width: calc(60vw - 220px);
+}
+
+.picture69 {
+  min-width: 120px;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  margin-right: 10px; /* Space between picture and info */
+}
+
+.message3 {
+  display: flex;
+  color: #ffbdc7;
+  font-family: "Quicksand", sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  height: 66vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.date3 {
+  height: 120px;
+  min-width: 100px;
+  background-color: #ffbdc7;
+  color: #555;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: 1000;
+  text-shadow: 1px 0 #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 13vw;
+}
+
+.confirm-buttons:hover {
+  cursor: default !important;
+}
+
+/* friends */
+
+.friends-container3 {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 5vh;
+  width: 88vw;
+  height: 76vh;
+  position: fixed;
+  bottom: 0;
+  left: 64%;
+  transform: translateX(-63%);
+  overflow-y: auto;
+  padding: 10px;
+  font-family: "Quicksand", sans-serif;
+}
+
+.friends-container3::-webkit-scrollbar {
+  width: 14px;
+}
+
+.friends-container3::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+.friends-container3::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px;
+  border: 3px solid #141414;
+}
+
+.friends-container3::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.friend-container3 {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(79, 75, 75, 0.5);
+  border: 3px solid #555;
+  height: 250px;
+  width: 200px;
+  overflow: hidden;
+}
+
+.bottom-section3 {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 75px;
+  width: 190px;
+  font-family: "Quicksand", sans-serif;
+  border-radius: 0 0 10px 10px;
+}
+
+.friend-container3:hover {
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+
+.picture3 {
+  min-width: 200px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.picture3:hover {
+  cursor: pointer;
+}
+
+.message3 {
+  width: 65vw;
+  display: flex;
+  color: #ffbdc7;
+  font-family: "Quicksand", sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  height: 66vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.categories {
+  height: 77vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Quicksand", sans-serif;
+  color: white;
+  overflow-y: auto;
+}
+
+.add-category-input {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+  margin-bottom: 3vh;
+}
+
+.category-fields {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.categories::-webkit-scrollbar {
+  width: 14px;
+}
+
+.categories::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+.categories::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px;
+  border: 3px solid #141414;
+}
+
+.categories::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.category-input {
+  width: 20vw;
+}
+
+.add-category-button {
+  width: 8vw;
+  height: 7vh;
+}
+
+.category-field {
+  position: relative;
+  min-height: 7vh;
+  width: 30vw;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the text */
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.category-text {
+  flex-grow: 1; /* Ensures the text takes available space */
+  text-align: center; /* Center the text within the available space */
+  
+}
+
+.delete-button {
+  position: absolute;
+  right: 10px; /* Position the button 10px from the right edge */
+  background-color: #2b2a2a;
+  border: 2px solid #ffbdc7;
+  color: #ffbdc7;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.delete-button img {
+  display: block; /* Ensures the image is centered within the button */
+  margin: 0 auto;
+}
+
+.delete-button:hover {
+  background-color: #ffbdc7;
+  color: #2b2a2a;
+}

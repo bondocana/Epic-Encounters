@@ -1,0 +1,97 @@
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  width: 7vw;
+  position: fixed;
+  background-color: #2b2a2a;
+  z-index: 999;
+}
+
+/* .profile-picture {
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.profile-img {
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+} 
+*/
+
+.profile-picture {
+  width: 65px;
+  height: 65px;
+  overflow: hidden; /* Ascunde părțile imaginii care ies în afara containerului */
+  border-radius: 50%; /* Opțional, pentru a face imaginea circulară */
+  position: relative; /* Asigură că imaginea se poziționează corect în container */
+  margin-left: 1.5vw;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05);
+  transition: transform 0.5s ease;
+}
+
+.profile-img {
+  width: 130%; /* Dimensiune mai mare decât containerul pentru a asigura crop */
+  position: absolute; /* Poziționează imaginea relativ la container */
+  top: 50%; /* Centrare verticală */
+  left: 50%; /* Centrare orizontală */
+  transform: translate(-50%, -50%); /* Ajustează pentru centrare perfectă */
+}
+
+.profile-img:hover {
+  cursor: pointer;
+}
+
+.tab {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 14px;
+  color: #a2a1a1;
+}
+
+.tab:hover {
+  cursor: pointer;
+  background-color: #1c1c1c;
+}
+
+.tabs-container {
+  height: 68vh;
+}
+
+.logout {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout:hover {
+  cursor: pointer;
+  background-color: #1c1c1c;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffbdc7;
+  font-size: 32px;
+  font-weight: 600;
+  height: 3vh;
+  margin-top: 4vh;
+}

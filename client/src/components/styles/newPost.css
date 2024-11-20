@@ -1,0 +1,71 @@
+:root {
+  --pink-color: #ffbdc7;
+  --dark-pink-color: #ff8a9c;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 89vw;
+  position: fixed;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  margin-left: 7vw;
+  height: 96vh;
+  padding: 2vh 2vw;
+}
+
+.titlu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffbdc7;
+  font-size: 32px;
+  font-weight: 600;
+  margin: 5vh 3vh 3vh;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 1vh 1vw;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3vh;
+  margin-bottom: 7vh;
+  padding-left: 2vw;
+
+  .top-section {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+}
+
+.button-group {
+  margin-top: 10vh;
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+  justify-content: center;
+}
+
+.white-image {
+  height: 30px;
+  width: 30px;
+}

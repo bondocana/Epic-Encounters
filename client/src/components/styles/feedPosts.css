@@ -1,0 +1,184 @@
+.filter-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 22vw;
+  height: 70vh;
+  position: fixed;
+  background-color: #2b2a2a;
+  bottom: 0; /* Position it at the bottom */
+  right: 0; /* Position it at the right */
+  z-index: -1;
+}
+
+.filter-menu .search-input {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5vh;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 1.5vh;
+}
+
+.filter-menu .search-input input {
+  flex-grow: 1;
+  padding: 8px;
+  width: 20vw;
+  color: white;
+  font-family: "Quicksand", sans-serif;
+}
+
+.filter-menu button {
+  margin: 5px 0;
+  padding: 10px 20px;
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-menu button:hover {
+  background-color: #777;
+}
+
+.feed-posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  width: 69vw;
+  height: 67.5vh;
+  position: fixed;
+  bottom: 0; /* Position it at the bottom */
+  left: 47%; /* Shift it to the center horizontally */
+  transform: translateX(-56%); /* Adjust for half of its own width */
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+.feed-posts::-webkit-scrollbar {
+  width: 14px; /* Width of the scrollbar */
+}
+
+.feed-posts::-webkit-scrollbar-track {
+  background: #141414; /* Background of the track */
+}
+
+.feed-posts::-webkit-scrollbar-thumb {
+  background-color: #555; /* maybe roz? ffbdc7*/
+  border-radius: 8px; /* Optional: rounded corners */
+  border: 3px solid #141414; /* Optional: border around the thumb */
+}
+
+.feed-posts::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Color of the scrollbar thumb when hovered */
+}
+.post {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  width: 60vw; /* Make posts take full width of the feed */
+  height: auto; /* Adjust height as needed */
+  min-height: 120px;
+  margin-bottom: 10px; /* Space between posts */
+  margin-top: 10px;
+  padding: 0; /* Optional: padding inside the post */
+  box-shadow: 0 2px 5px rgba(79, 75, 75, 0.5); /* Optional: add shadow to posts */
+  border-radius: 10px; /* Optional: rounded corners */
+  border: 3px solid #555;
+  color: #ffbdc7;
+  overflow: hidden;
+}
+
+.post:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+
+.info {
+  flex-grow: 1; /* Make the info section take the remaining space */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-family: "Quicksand", sans-serif;
+  max-width: calc(60vw - 220px);
+}
+
+.picture {
+  min-width: 120px;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  margin-right: 10px; /* Space between picture and info */
+}
+
+.message {
+  display: flex;
+  color: #ffbdc7;
+  font-family: "Quicksand", sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  height: 66vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.date {
+  height: 120px;
+  min-width: 100px;
+  background-color: #ffbdc7;
+  color: #555;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: 1000;
+  text-shadow: 1px 0 #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-menu .category-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22vw;
+}
+
+.category-button {
+  width: 22vw;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  color: #d3d3d3;
+}
+
+.category-button:hover {
+  cursor: pointer;
+  color: #ffbdc7;
+}
+
+.all-posts {
+  width: 22vw;
+  height: 7vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Quicksand", sans-serif;
+  font-size: 18px;
+  color: #ffbdc7;
+  background-color: #555;
+}
+
+.all-posts:hover {
+  cursor: pointer;
+}

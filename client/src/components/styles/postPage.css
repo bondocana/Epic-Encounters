@@ -1,0 +1,105 @@
+:root {
+  --pink-color: #ffbdc7;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #141414;
+}
+
+.postPageContainer {
+  display: flex;
+  flex-direction: column;
+  width: 93vw;
+  position: fixed;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  margin-left: 7vw;
+  height: 100vh;
+}
+
+.imageTop {
+  width: 93vw;
+  height: 35vh;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast; /* Ensure the best possible rendering */
+  box-shadow: 0 7px 20px #5c5c5c;
+}
+
+.bottom {
+  padding: 2vh 2vw 2vh 2vw;
+  width: 89vw;
+  height: 60vh;
+  overflow-y: auto;
+}
+
+/* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+.bottom::-webkit-scrollbar {
+  width: 9px; /* Width of the scrollbar */
+}
+
+.bottom::-webkit-scrollbar-track {
+  background: transparent; /* Background of the track */
+}
+
+.bottom::-webkit-scrollbar-thumb {
+  background-color: #555; /* maybe roz? ffbdc7*/
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.bottom::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Color of the scrollbar thumb when hovered */
+}
+
+.postTitle {
+  color: var(--pink-color);
+  font-size: 34px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editDelete {
+  display: flex;
+  gap: 1vw;
+}
+
+.timelineMap {
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+}
+
+.friend-avatars {
+  margin-left: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-family: "Quicksand", sans-serif;
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
+  gap: 0.5vh;
+}
+
+.avatar:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
+}
+
+.post-description {
+  font-size: 16px;
+  color: #555;
+  text-indent: 2em;
+  text-align: justify;
+}
+
+.span-link:hover {
+  cursor: pointer;
+  color: #ffbdc7;
+}

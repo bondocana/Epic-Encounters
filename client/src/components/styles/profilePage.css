@@ -1,0 +1,191 @@
+:root {
+  --pink-color: #ffbdc7;
+}
+
+.profile-container {
+  display: flex;
+  width: 87vw;
+  position: fixed;
+  margin-left: 7vw;
+  height: 90vh;
+  gap: 3vw;
+  padding: 5vh 3vw;
+  font-family: "Quicksand", sans-serif;
+}
+
+.left-container {
+  width: 65vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-container {
+  width: 19vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-pic-container {
+  width: 250px;
+  height: 250px;
+  overflow: hidden; /* Ascunde părțile imaginii care ies în afara containerului */
+  border-radius: 10px; /* Opțional, pentru a face imaginea circulară */
+  position: relative; /* Asigură că imaginea se poziționează corect în container */
+  margin-left: 1.5vw;
+  margin-bottom: 4vh;
+}
+
+.profile-pic {
+  width: 130%; /* Dimensiune mai mare decât containerul pentru a asigura crop */
+  position: absolute; /* Poziționează imaginea relativ la container */
+  top: 50%; /* Centrare verticală */
+  left: 50%; /* Centrare orizontală */
+  transform: translate(-50%, -50%); /* Ajustează pentru centrare perfectă */
+}
+
+.hr2 {
+  width: 100%; /* Setează lățimea la 80% din container */
+  height: 0.5px; /* Grosimea liniei */
+  background-color: var(--pink-color); /* Culoarea liniei */
+  border: none; /* Elimină eventualele borduri */
+  margin-bottom: 5vh;
+}
+
+.name-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2vh;
+  padding: 0 1vw 0 1vw;
+}
+.name {
+  color: var(--pink-color);
+  font-size: 27px;
+  font-weight: 400;
+  margin-top: 1vh;
+}
+
+.sub-title {
+  margin-bottom: -8px;
+  color: var(--pink-color);
+  font-size: 15px;
+}
+
+.sub-sub-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 550;
+  margin-bottom: 1vh;
+}
+
+.profile-info {
+  color: #dedede;
+  margin-bottom: 5vh;
+  margin-left: 35px;
+}
+
+.feed-posts2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  width: 65vw;
+  height: 78.4vh;
+  position: fixed;
+  bottom: 0; /* Position it at the bottom */
+  left: 50%; /* Shift it to the center horizontally */
+  transform: translateX(-63%); /* Adjust for half of its own width */
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+.feed-posts2::-webkit-scrollbar {
+  width: 14px; /* Width of the scrollbar */
+}
+
+.feed-posts2::-webkit-scrollbar-track {
+  background: #141414; /* Background of the track */
+}
+
+.feed-posts2::-webkit-scrollbar-thumb {
+  background-color: #555; /* maybe roz? ffbdc7*/
+  border-radius: 8px; /* Optional: rounded corners */
+  border: 3px solid #141414; /* Optional: border around the thumb */
+}
+
+.feed-posts2::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Color of the scrollbar thumb when hovered */
+}
+.post2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  width: 60vw; /* Make posts take full width of the feed */
+  min-height: 120px;
+  margin-bottom: 10px; /* Space between posts */
+  margin-top: 10px;
+  padding: 0; /* Optional: padding inside the post */
+  box-shadow: 0 2px 5px rgba(79, 75, 75, 0.5); /* Optional: add shadow to posts */
+  border-radius: 10px; /* Optional: rounded corners */
+  border: 3px solid #555;
+  color: #ffbdc7;
+  overflow: hidden;
+}
+
+.post2:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+
+.info2 {
+  flex-grow: 1; /* Make the info section take the remaining space */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-family: "Quicksand", sans-serif;
+  max-width: calc(60vw - 220px);
+}
+
+.picture2 {
+  min-width: 120px;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  margin-right: 10px; /* Space between picture and info */
+}
+
+.message2 {
+  display: flex;
+  color: #ffbdc7;
+  font-family: "Quicksand", sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  height: 66vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.date2 {
+  height: 120px;
+  min-width: 100px;
+  background-color: #ffbdc7;
+  color: #555;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: 1000;
+  text-shadow: 1px 0 #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.relation-status-text {
+  border: 2px;
+  padding: 5px;
+  padding-top: 15px;
+  color: #ffbdc7;
+  font-family: "Quicksand", sans-serif;
+}
