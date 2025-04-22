@@ -2,27 +2,28 @@
 
 Epic Encounters is an innovative full-stack web application built using the MERN stack (MongoDB, Express.js, React, Node.js). It is designed to make it easier to discover, organize, and participate in social events, while fostering real connections through a user-friendly and interactive platform.
 
-🚀 Key Features
-🔍 Event discovery with filters and interactive map
+🚀 ***Key Features***
 
-👥 Friends system & shared participation
+🔍 - Event discovery with filters and interactive map
 
-📝 Create and publish your own events (admin approval required)
+👥 - Friends system & shared participation
 
-🌍 Map view using OpenStreetMap & Leaflet
+📝 - Create and publish your own events (admin approval required)
 
-🔐 JWT-based authentication and role management (user/admin)
+🌍 - Map view using OpenStreetMap & Leaflet
 
-📁 Image uploads for user profiles and event posts
+🔐 - JWT-based authentication and role management (user/admin)
 
-🎨 Modern UI with Material UI + React
+📁 - Image uploads for user profiles and event posts
+
+🎨 - Modern UI with Material UI + React
 
 
-⚙️ Tech Stack
-Frontend: React, Redux Toolkit, React Router, Material UI, Formik + Yup
+⚙️ ***Tech Stack***
+- Frontend: React, Redux Toolkit, React Router, Material UI, Formik + Yup
 
-Backend: Node.js, Express.js, JWT, Multer, Dotenv
+- Backend: Node.js, Express.js, JWT, Multer, Dotenv
 
-Database: MongoDB + Mongoose
+- Database: MongoDB + Mongoose
 
-Others: Leaflet, React Dropzone, React Toastify
+- Others: Leaflet, React Dropzone, React Toastify
