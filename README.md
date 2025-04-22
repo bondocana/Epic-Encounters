@@ -4,19 +4,19 @@ Epic Encounters is an innovative full-stack web application built using the MERN
 
 🚀 ***Key Features***
 
-🔍 - Event discovery with filters and interactive map
+- 🔍 Event discovery with filters and interactive map
 
-👥 - Friends system & shared participation
+- 👥 Friends system & shared participation
 
-📝 - Create and publish your own events (admin approval required)
+- 📝 Create and publish your own events (admin approval required)
 
-🌍 - Map view using OpenStreetMap & Leaflet
+- 🌍 Map view using OpenStreetMap & Leaflet
 
-🔐 - JWT-based authentication and role management (user/admin)
+- 🔐 JWT-based authentication and role management (user/admin)
 
-📁 - Image uploads for user profiles and event posts
+- 📁 Image uploads for user profiles and event posts
 
-🎨 - Modern UI with Material UI + React
+- 🎨 Modern UI with Material UI + React
 
 
 ⚙️ ***Tech Stack***
